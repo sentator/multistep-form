@@ -1,0 +1,16 @@
+.MuiTooltip-popper .MuiTooltip-tooltip {
+	max-width: 300px;
+	border-radius: 16px;
+	background: var(--mainWhiteColor);
+	padding: 10px 16px;
+	font-family: var(--fontFamily);
+	font-size: 0.8rem;
+	font-weight: 400;
+	line-height: 130%;
+	color: var(--mainDarkColor);
+	box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.14);
+}
+.tooltip-icon {
+	display: inline-block;
+	margin-left: 4px;
+}

@@ -1,6 +1,6 @@
-export interface Country {
+export interface OptionItem {
 	id: string;
 	name: string;
 	label: string;
-	flagUrl: string;
+	icon?: string;
 }

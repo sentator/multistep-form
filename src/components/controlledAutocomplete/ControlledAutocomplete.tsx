@@ -1,39 +1,40 @@
-import React from "react";
 import { Controller, Control, Path, FieldValues } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
+import { OptionItem } from "../../types";
+
 import "./controlledAutocomplete.scss";
 
-interface ControlledAutocompleteProps<
-	Option extends { id: string; label: string; name: string; flagUrl: string },
-	Field extends FieldValues
-> {
+interface ControlledAutocompleteProps<Option extends OptionItem, Field extends FieldValues> {
 	control: Control<Field>;
 	name: Path<Field>;
 	options: Option[];
 	id: string;
 	placeholder?: string;
-	inputType?: "default" | "withIcon";
+	label?: string;
 }
 
-export const ControlledAutocomplete = <
-	Option extends { id: string; label: string; name: string; flagUrl: string },
-	Field extends FieldValues
->(
+export const ControlledAutocomplete = <Option extends OptionItem, Field extends FieldValues>(
 	props: ControlledAutocompleteProps<Option, Field>
 ) => {
-	const { control, options, name, id, inputType = "default" } = props;
+	const { control, options, name, id, label } = props;
+
 	return (
 		<Controller
 			name={name}
 			control={control}
 			rules={{
-				required: "Field is requried",
+				required: "Значення не повинно бути пустим.",
 			}}
 			render={({ field: { value, onChange, ref }, fieldState: { error } }) => {
 				return (
-					<>
+					<div className="controlled-autocomplete">
+						{label && (
+							<label className="controlled-autocomplete__label" htmlFor={id}>
+								{label}
+							</label>
+						)}
 						<Autocomplete
 							value={value ? options.find((option) => value.id === option.id) : null}
 							getOptionLabel={(option) => option.name}
@@ -42,24 +43,22 @@ export const ControlledAutocomplete = <
 							}}
 							id={id}
 							options={options}
-							renderInput={(params) =>
-								inputType === "default" && (
-									<TextField
-										{...params}
-										label={props.placeholder}
-										inputRef={ref}
-										InputProps={{
-											...params.InputProps,
-											startAdornment: value ? (
-												<img src={value.flagUrl} alt={value.label}></img>
-											) : null,
-										}}
-									/>
-								)
-							}
+							renderInput={(params) => (
+								<TextField
+									{...params}
+									label={props.placeholder}
+									inputRef={ref}
+									InputProps={{
+										...params.InputProps,
+										startAdornment:
+											value && value.icon ? <img src={value.icon} alt={value.label}></img> : null,
+									}}
+									error={Boolean(error)}
+								/>
+							)}
 							renderOption={(props, option, state) => (
 								<li className="autocomplete__item" {...props}>
-									<img src={option.flagUrl} alt={option.label} />
+									{option && option.icon && <img src={option.icon} alt={option.label} />}
 									<span>{option.name}</span>
 								</li>
 							)}
@@ -77,32 +76,19 @@ export const ControlledAutocomplete = <
 							clearIcon={false}
 							disablePortal
 							classes={{
-								root: "autocomplete",
+								root: "controlled-autocomplete__autocomplete autocomplete",
 								popper: "autocomplete__popper",
 								input: "autocomplete__input",
 								option: "autocomplete__option",
 							}}
 							sx={{
-								"& .MuiAutocomplete-inputRoot": {
-									fontFamily: "Inter",
-									display: "flex",
-									gap: "10px",
-									justifyContent: "flex-start",
-									width: "100%",
-									height: "46px",
-									padding: "10px 38px 10px 10px",
-									borderRadius: "12px",
-									border: "1px solid var(--gullGrayColor)",
-									fontSize: "16px",
-									cursor: "pointer",
-								},
 								"& .MuiOutlinedInput-root .MuiAutocomplete-input": {
 									padding: 0,
 								},
 							}}
 						/>
-						{error ? <p style={{ color: "red" }}>{error.message}</p> : null}
-					</>
+						{error ? <p className="controlled-autocomplete__error">{error.message}</p> : null}
+					</div>
 				);
 			}}
 		/>

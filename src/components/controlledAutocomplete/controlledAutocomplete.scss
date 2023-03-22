@@ -1,34 +1,15 @@
-.autocomplete {
-	&.MuiAutocomplete-inputRoot {
-		font-family: var(--fontFamily);
-		display: flex;
-		gap: 10px;
-		justify-content: flex-start;
-		width: 100%;
-		height: 46px;
-		padding: 10px 38px 10px 10px;
-		border-radius: 12px;
-		border: 1px solid var(--gullGrayColor);
-		font-size: 16px;
-		cursor: pointer;
+.controlled-autocomplete {
+	&__label {
+		font-weight: 400;
+		font-size: 0.875rem;
+		line-height: 170%;
+		margin-bottom: 4px;
 	}
-	.MuiAutocomplete-inputRoot .MuiOutlinedInput-root &__input.MuiAutocomplete-input {
-		padding: 0;
+	&__autocomplete {
+		margin-bottom: 13px;
 	}
-	.MuiAutocomplete-listbox &__option.MuiAutocomplete-option {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px;
-		min-height: 46px;
-		font-size: 1rem;
-		line-height: 140%;
-		font-family: var(--fontFamily);
-		color: #333;
-		cursor: pointer;
-	}
-	.MuiAutocomplete-listbox &__option.MuiAutocomplete-option.Mui-focused {
-		color: var(--mainDarkColor);
-		background-color: #f6f6f9;
+	&__error {
+		color: var(--mainRedColor);
+		font-size: 13px;
 	}
 }
