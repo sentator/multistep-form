@@ -26,13 +26,24 @@ export const ControlledInput = <Field extends FieldValues>(props: ControlledInpu
 					<div className="controlled-input">
 						{label && (
 							<label className="controlled-input__label" htmlFor={id}>
-								<span>
-									{label}
-									{!!tooltip && <Tooltip title={tooltip} />}
-								</span>
+								<span className="controlled-input__label-text">{label}</span>
+								{!!tooltip && (
+									<span className="controlled-input__label-icon">
+										<Tooltip title={tooltip} />
+									</span>
+								)}
 							</label>
 						)}
-						<input type="text" {...field} className="controlled-input__input" placeholder={placeholder} />
+						<div className="controlled-input__input-wrapper">
+							<input
+								type="text"
+								{...field}
+								className="controlled-input__input"
+								placeholder={placeholder}
+								id={id}
+								data-error={!!error}
+							/>
+						</div>
 						{error ? <p className="controlled-input__error">{error.message}</p> : null}
 					</div>
 				);

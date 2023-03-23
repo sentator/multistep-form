@@ -1,12 +1,23 @@
 .controlled-autocomplete {
+	display: flex;
+	flex-direction: column;
 	&__label {
+		flex: 0 0 27px;
+		display: flex;
 		font-weight: 400;
 		font-size: 0.875rem;
 		line-height: 170%;
 		margin-bottom: 4px;
 	}
-	&__autocomplete {
+	&__label-text {
+		align-self: flex-end;
+	}
+	&__label-icon {
+	}
+	&__autocomplete-wrapper {
 		margin-bottom: 13px;
+	}
+	&__autocomplete {
 	}
 	&__error {
 		color: var(--mainRedColor);

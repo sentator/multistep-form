@@ -4,3 +4,9 @@ export interface OptionItem {
 	label: string;
 	icon?: string;
 }
+
+export interface ProductItem {
+	productName: string;
+	quantity: number;
+	totalPrice: string;
+}

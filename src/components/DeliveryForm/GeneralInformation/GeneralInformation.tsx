@@ -2,25 +2,37 @@ import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledA
 import { useForm } from "react-hook-form";
 
 import { COUNTRIES, SHOPS } from "../../../utils";
-import { OptionItem } from "../../../types";
+import { OptionItem, ProductItem } from "../../../types";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
+import OrderComposition from "../orderComposition/OrderComposition";
 
-export default function Test() {
+import "./generalInformation.scss";
+
+export default function GeneralInformation() {
 	const { handleSubmit, control, watch } = useForm<{
 		country: OptionItem | null;
 		shop: OptionItem | null;
 		parcelName: string;
-	}>({ defaultValues: { country: null, shop: null, parcelName: "" } });
+		orderComposition: ProductItem[];
+	}>({
+		defaultValues: {
+			country: null,
+			shop: null,
+			parcelName: "",
+			orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
+		},
+	});
 
 	const country = watch("country");
 
 	return (
 		<form
+			className="general-information-form"
 			onSubmit={handleSubmit((data) => {
 				console.log("data ready to submit", data);
 			})}
 		>
-			<div style={{ maxWidth: 220 }}>
+			<div className="general-information-form__row general-information-form__row--1">
 				<ControlledAutocomplete
 					options={COUNTRIES}
 					control={control}
@@ -38,13 +50,16 @@ export default function Test() {
 				<ControlledInput
 					control={control}
 					name="parcelName"
-					id="input_parcel name"
+					id="input_parcel-name"
 					label="Назва відправлення (необов'язково)"
 					placeholder="Подарунки батькам"
-					tooltip="Ви можете назвати відправлення як завгодно для подальшої зручності"
+					tooltip="Ви можете назвати відправлення для подальшої зручності її ідентифікації з-поміж інших посилок. Напишіть, наприклад, «Круті кеди», «Подарунок мамі», що завгодно."
 				/>
-				<button type="submit">Submit</button>
 			</div>
+			<div className="general-information-form__row">
+				<OrderComposition name="orderComposition" control={control} />
+			</div>
+			<button type="submit">Submit</button>
 		</form>
 	);
 }

@@ -14,7 +14,7 @@ function App() {
 						gap: "10px",
 						justifyContent: "flex-start",
 						width: "100%",
-						height: "46px",
+						height: "48px",
 						padding: "10px 38px 10px 10px",
 						borderRadius: "12px",
 						fontSize: "16px",
