@@ -15,7 +15,9 @@
 	}
 	&__input-wrapper {
 		flex: 0 0 48px;
-		margin-bottom: 13px;
+		&:not(:last-child) {
+			margin-bottom: 13px;
+		}
 	}
 	&__input {
 		display: inline-block;

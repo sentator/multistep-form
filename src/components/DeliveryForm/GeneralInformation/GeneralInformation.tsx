@@ -8,6 +8,7 @@ import OrderComposition from "../orderComposition/OrderComposition";
 import CardsInformation from "../../cardsInformation/CardsInformation";
 
 import "./generalInformation.scss";
+import SectionTracking from "../../sectionTracking/SectionTracking";
 
 export default function GeneralInformation() {
 	const { handleSubmit, control, watch } = useForm<{
@@ -17,6 +18,7 @@ export default function GeneralInformation() {
 		orderComposition: ProductItem[];
 		customsFees: [{ value: boolean }];
 		promocode: string;
+		trackNumber: string;
 	}>({
 		defaultValues: {
 			country: null,
@@ -25,6 +27,7 @@ export default function GeneralInformation() {
 			orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
 			customsFees: [],
 			promocode: "",
+			trackNumber: "",
 		},
 		mode: "onSubmit",
 	});
@@ -91,14 +94,21 @@ export default function GeneralInformation() {
 				<div className="general-information-form__promocode">
 					<ControlledInput
 						control={control}
-						name={"promocode"}
+						name="promocode"
 						id="input_promocode"
 						label="Промокод"
 						tooltip="Якщо у вас є промокод на знижку, введіть його в це поле."
 					/>
 				</div>
 			</div>
-			<button type="submit">Submit</button>
+			<div className="general-information-form__row general-information-form__row--5">
+				<SectionTracking name="trackNumber" id="input_track-number" control={control} />
+			</div>
+			<div className="general-information-form__row general-information-form__row--6">
+				<button className="general-information-form__btn-submit" type="submit">
+					Зберегти відправлення
+				</button>
+			</div>
 		</form>
 	);
 }

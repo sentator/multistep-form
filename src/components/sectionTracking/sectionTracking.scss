@@ -1,0 +1,20 @@
+.section-tracking {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 10px;
+	padding: 20px 0 15px;
+	box-shadow: 0 0 0 100vmax var(--mainYellowColor);
+	clip-path: inset(0 -100vmax);
+	background-color: var(--mainYellowColor);
+	@media (max-width: 62em) {
+		grid-template-columns: auto;
+	}
+	&__input {
+	}
+	&__description {
+		padding-top: 30px;
+		font-size: 0.82rem;
+		line-height: 115%;
+		color: var(--mainDarkColor);
+	}
+}

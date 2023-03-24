@@ -19,11 +19,38 @@
 	}
 	&__row--4 {
 	}
+	&__row--5 {
+	}
+	&__row--6 {
+		justify-items: center;
+		padding-top: 40px;
+	}
 	&__promocode {
 		max-width: 220px;
 		padding: 0 0 40px;
 		box-shadow: 0 0 0 100vmax var(--mainGrayColor);
 		clip-path: inset(0 -100vmax);
 		background-color: var(--mainGrayColor);
+	}
+	&__btn-submit {
+		display: inline-block;
+		padding: 10px 20px;
+		border: 1px solid var(--mainRedColor);
+		border-radius: 24px;
+		font-size: 0.875rem;
+		line-height: 150%;
+		color: var(--mainRedColor);
+		background-color: transparent;
+		cursor: pointer;
+		transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+		@media (any-hover: hover) {
+			&:hover {
+				background-color: var(--mainRedColor);
+				color: var(--mainWhiteColor);
+			}
+		}
+		&:focus-visible {
+			outline: 2px solid var(--mainFocusColor);
+		}
 	}
 }

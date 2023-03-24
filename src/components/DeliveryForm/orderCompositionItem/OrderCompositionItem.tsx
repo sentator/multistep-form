@@ -22,7 +22,16 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 			<div className="fields-product__name">
 				<ControlledInput
 					name={`${name}.${index}.productName` as Path<Field>}
-					rules={{ required: "Значення не повинно бути пустим." }}
+					rules={{
+						validate: {
+							required: (value) => {
+								if (!value) {
+									return "Значення не повинно бути пустим.";
+								}
+								if (value.match(/\W/gi)) return "Доступні лише символи з латиниці";
+							},
+						},
+					}}
 					control={control}
 					id={`${name}_${index}_productName`}
 					label="Назва товару (латиницею)"
