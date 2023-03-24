@@ -1,10 +1,11 @@
 import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
 import { useForm } from "react-hook-form";
 
-import { COUNTRIES, SHOPS } from "../../../utils";
+import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../utils";
 import { OptionItem, ProductItem } from "../../../types";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import OrderComposition from "../orderComposition/OrderComposition";
+import CardsInformation from "../../cardsInformation/CardsInformation";
 
 import "./generalInformation.scss";
 
@@ -14,16 +15,30 @@ export default function GeneralInformation() {
 		shop: OptionItem | null;
 		parcelName: string;
 		orderComposition: ProductItem[];
+		customsFees: [{ value: boolean }];
+		promocode: string;
 	}>({
 		defaultValues: {
 			country: null,
 			shop: null,
 			parcelName: "",
 			orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
+			customsFees: [],
+			promocode: "",
 		},
+		mode: "onSubmit",
 	});
 
 	const country = watch("country");
+	const orderComposition = watch("orderComposition");
+	const optionsShops = country ? SHOPS[country.id] : SHOPS["default"];
+	const currency = country ? CURRENCY[country.id] : undefined;
+	const currencySymbol = currency?.symbol;
+	const currencyValue = currency?.value;
+	const totalPrice = calcTotalPrice(orderComposition);
+	const customsFees = calcCustomsFees(currencyValue, totalPrice);
+	const formattedTotalPrice = getFormattedPrice(totalPrice, currencySymbol);
+	const formattedCustomsFees = getFormattedPrice(customsFees, currencySymbol);
 
 	return (
 		<form
@@ -41,7 +56,7 @@ export default function GeneralInformation() {
 					label="Країна"
 				/>
 				<ControlledAutocomplete
-					options={country ? SHOPS[country.id] : SHOPS["default"]}
+					options={optionsShops}
 					control={control}
 					name="shop"
 					id="select-shop"
@@ -56,8 +71,32 @@ export default function GeneralInformation() {
 					tooltip="Ви можете назвати відправлення для подальшої зручності її ідентифікації з-поміж інших посилок. Напишіть, наприклад, «Круті кеди», «Подарунок мамі», що завгодно."
 				/>
 			</div>
-			<div className="general-information-form__row">
-				<OrderComposition name="orderComposition" control={control} />
+			<div className="general-information-form__row general-information-form__row--2">
+				<OrderComposition
+					name="orderComposition"
+					control={control}
+					currencySymbol={currencySymbol}
+					formattedTotalPrice={formattedTotalPrice}
+				/>
+			</div>
+			<div className="general-information-form__row general-information-form__row--3">
+				<CardsInformation
+					name="customsFees"
+					control={control}
+					formattedCustomsFees={formattedCustomsFees || "0.00 " + (currencySymbol ? currencySymbol : "")}
+					isAgreementNeeded={!!customsFees}
+				/>
+			</div>
+			<div className="general-information-form__row general-information-form__row--4">
+				<div className="general-information-form__promocode">
+					<ControlledInput
+						control={control}
+						name={"promocode"}
+						id="input_promocode"
+						label="Промокод"
+						tooltip="Якщо у вас є промокод на знижку, введіть його в це поле."
+					/>
+				</div>
 			</div>
 			<button type="submit">Submit</button>
 		</form>

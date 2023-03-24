@@ -10,3 +10,9 @@ export interface ProductItem {
 	quantity: number;
 	totalPrice: string;
 }
+
+export interface CurrencyRate {
+	usd: { rate: number };
+	eur: { rate: number };
+	gbp: { rate: number };
+}

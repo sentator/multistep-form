@@ -12,10 +12,11 @@ interface ControlledInputPriceProps<Field extends FieldValues> {
 	label?: string;
 	rules?: Omit<RegisterOptions<Field, Path<Field>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 	tooltip?: string;
+	currencySymbol?: string;
 }
 
 export const ControlledInputPrice = <Field extends FieldValues>(props: ControlledInputPriceProps<Field>) => {
-	const { control, name, id, label, rules, tooltip } = props;
+	const { control, name, id, label, rules, tooltip, currencySymbol } = props;
 
 	return (
 		<Controller
@@ -42,7 +43,7 @@ export const ControlledInputPrice = <Field extends FieldValues>(props: Controlle
 								allowNegativeValue={false}
 								decimalScale={2}
 								decimalSeparator="."
-								suffix=" $"
+								suffix={currencySymbol && ` ${currencySymbol}`}
 								maxLength={8}
 								step={1}
 								value={value}

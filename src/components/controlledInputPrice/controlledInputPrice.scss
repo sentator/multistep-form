@@ -3,6 +3,7 @@
 	flex-direction: column;
 	&__label {
 		flex: 0 0 27px;
+		display: flex;
 		font-weight: 400;
 		font-size: 0.875rem;
 		line-height: 170%;
@@ -27,6 +28,7 @@
 		border-radius: 12px;
 		color: var(--mainDarkColor);
 		font-size: 0.875rem;
+		text-align: right;
 		&::placeholder {
 			font-size: 1rem;
 			color: var(--gullGrayColor);

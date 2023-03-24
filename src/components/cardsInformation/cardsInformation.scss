@@ -1,0 +1,62 @@
+.cards-information {
+	padding: 40px 0;
+	box-shadow: 0 0 0 100vmax var(--mainGrayColor);
+	clip-path: inset(0 -100vmax);
+	background-color: var(--mainGrayColor);
+	/* .cards-information__list */
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 12px;
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+		@media (max-width: 48em) {
+			grid-template-columns: auto;
+		}
+	}
+	/* .cards-information__item */
+	&__item {
+		background: var(--mainWhiteColor);
+		padding: 12px 20px;
+		border-radius: 12px;
+	}
+}
+.customs-fees {
+	/* .customs-fees__row */
+	&__row {
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+	}
+	/* .customs-fees__title */
+	&__title {
+		font-size: 1rem;
+		line-height: 125%;
+	}
+	/* .customs-fees__tooltip */
+	&__tooltip {
+		margin-left: -5px;
+	}
+	/* .customs-fees__price */
+	&__price {
+		flex: 1 1 auto;
+		text-align: right;
+		white-space: nowrap;
+	}
+}
+.client-bonuses {
+	/* .client-bonuses__title */
+	&__title {
+		font-size: 1rem;
+		margin-bottom: 1.25em;
+	}
+	/* .client-bonuses__body */
+	&__body {
+		font-size: 0.82rem;
+		line-height: 130%;
+	}
+}

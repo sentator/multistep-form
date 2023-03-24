@@ -1,0 +1,80 @@
+.fields-product {
+	position: relative;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	gap: 10px;
+	@media (max-width: 48em) {
+		grid-template-columns: 1fr;
+	}
+	/* .fields-product__name */
+	&__name {
+		grid-column: span 3;
+		@media (max-width: 48em) {
+			grid-column: auto;
+		}
+	}
+	/* .fields-product__quantity */
+	&__quantity {
+		grid-column: span 1;
+		@media (max-width: 48em) {
+			grid-column: auto;
+		}
+	}
+	/* .fields-product__price */
+	&__price {
+		grid-column: span 1;
+		@media (max-width: 48em) {
+			grid-column: auto;
+		}
+	}
+	/* .fields-product__btn-clear */
+	&__btn-clear {
+		position: absolute;
+		top: 55px;
+		right: -30px;
+		transform: translateY(-50%);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		background: transparent;
+		border: none;
+		cursor: pointer;
+		color: var(--mainDarkColor);
+		transition: color 0.3s ease-in-out;
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--mainRedColor);
+			}
+		}
+		@media (max-width: 62em) {
+			position: static;
+			width: auto;
+			height: auto;
+			justify-content: flex-start;
+			column-gap: 6px;
+		}
+		&:focus-visible {
+			outline: 2px solid var(--mainFocusColor);
+		}
+		svg {
+			pointer-events: none;
+			color: inherit;
+			@media (max-width: 62em) {
+				color: var(--mainRedColor);
+			}
+		}
+		span {
+			display: none;
+			text-transform: uppercase;
+			font-size: 0.82rem;
+			line-height: 130%;
+			font-weight: 700;
+
+			@media (max-width: 62em) {
+				display: block;
+			}
+		}
+	}
+}
