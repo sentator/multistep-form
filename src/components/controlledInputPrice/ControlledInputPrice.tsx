@@ -1,3 +1,4 @@
+import React from "react";
 import { Controller, Control, Path, FieldValues, RegisterOptions } from "react-hook-form";
 import CurrencyInput from "react-currency-input-field";
 
@@ -17,6 +18,7 @@ interface ControlledInputPriceProps<Field extends FieldValues> {
 
 export const ControlledInputPrice = <Field extends FieldValues>(props: ControlledInputPriceProps<Field>) => {
 	const { control, name, id, label, rules, tooltip, currencySymbol } = props;
+	const [localValue, setLocalValue] = React.useState<string | undefined>("0.00");
 
 	return (
 		<Controller
@@ -38,18 +40,20 @@ export const ControlledInputPrice = <Field extends FieldValues>(props: Controlle
 						)}
 						<div className="controlled-price-field__input-wrapper">
 							<CurrencyInput
+								{...rest}
 								className="controlled-price-field__input"
 								id={id}
 								allowNegativeValue={false}
 								decimalScale={2}
 								decimalSeparator="."
+								disableGroupSeparators
 								suffix={currencySymbol && ` ${currencySymbol}`}
 								maxLength={8}
 								step={1}
-								value={value}
-								onValueChange={onChange}
+								value={localValue}
+								onValueChange={(value) => setLocalValue(value)}
+								onBlur={() => onChange(localValue)}
 								data-error={!!error}
-								{...rest}
 							/>
 						</div>
 						{error ? <p className="controlled-price-field__error">{error.message}</p> : null}
