@@ -6,9 +6,9 @@ import { OptionItem, ProductItem } from "../../../types";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import OrderComposition from "../orderComposition/OrderComposition";
 import CardsInformation from "../../cardsInformation/CardsInformation";
+import SectionTracking from "../../sectionTracking/SectionTracking";
 
 import "./generalInformation.scss";
-import SectionTracking from "../../sectionTracking/SectionTracking";
 
 export default function GeneralInformation() {
 	const { handleSubmit, control, watch } = useForm<{
