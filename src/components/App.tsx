@@ -1,7 +1,9 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import GeneralInformation from "./DeliveryForm/GeneralInformation/GeneralInformation";
+import GeneralInformation from "./DeliveryForm/generalInformation/GeneralInformation";
+import Documents from "./DeliveryForm/documents/Documents";
+import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
 
 function App() {
 	const theme = createTheme({
@@ -44,6 +46,64 @@ function App() {
 		},
 	});
 
+	const FORM_STEPS = [
+		{
+			label: "generalInformation",
+			title: "Інформація про відправлення",
+		},
+		{
+			label: "documents",
+			title: "Документи",
+		},
+		{
+			label: "address",
+			title: "Адреса отримання",
+		},
+	];
+
+	const FORM_STATE = {
+		selectedIndex: 0,
+		steps: {
+			generalInformation: {
+				valid: false,
+				dirty: false,
+				value: {
+					country: null,
+					shop: null,
+					parcelName: "",
+					orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
+					customsFees: [],
+					promocode: "",
+					trackNumber: "",
+				},
+			},
+			documents: {
+				valid: false,
+				dirty: false,
+				value: {},
+			},
+			address: {
+				valid: false,
+				dirty: false,
+				value: {},
+			},
+		},
+	};
+
+	const [form, setForm] = React.useState(FORM_STATE);
+
+	const next = () => {
+		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex + 1 }));
+	};
+
+	const prev = () => {
+		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex - 1 }));
+	};
+
+	const setSelectedIndex = (index: number) => {
+		setForm((prevState) => ({ ...prevState, selectedIndex: index }));
+	};
+
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="app">
@@ -63,6 +123,8 @@ function App() {
 						</ul>
 					</div>
 					<GeneralInformation />
+					{/* <Documents /> */}
+					{/* <StepAddress /> */}
 				</div>
 			</div>
 		</ThemeProvider>

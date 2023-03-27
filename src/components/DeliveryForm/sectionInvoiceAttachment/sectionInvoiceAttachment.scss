@@ -1,0 +1,24 @@
+.section-invoice-attachment {
+	padding: 16px 0;
+	/* .section-invoice-attachment__title */
+	&__title {
+		font-weight: 400;
+		font-size: 1.44rem;
+		line-height: 130%;
+		margin-bottom: 16px;
+	}
+	/* .section-invoice-attachment__description */
+	&__description {
+		font-size: 1rem;
+		line-height: 137%;
+		margin-bottom: 1.25em;
+		p {
+			&:not(:last-child) {
+				margin-bottom: 0.82em;
+			}
+		}
+	}
+	/* .section-invoice-attachment__input */
+	&__input {
+	}
+}

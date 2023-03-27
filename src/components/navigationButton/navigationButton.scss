@@ -1,0 +1,33 @@
+.navigation-btn {
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
+	padding: 10px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	color: var(--mainDarkColor);
+	transition: color 0.3s ease-in-out;
+	&--icon-left {
+		flex-direction: row-reverse;
+		.navigation-btn__icon {
+			transform: rotate(180deg);
+		}
+	}
+	@media (any-hover: hover) {
+		&:hover {
+			color: var(--mainRedColor);
+		}
+	}
+	&:focus-visible {
+		outline: 2px solid var(--mainFocusColor);
+		border-radius: 24px;
+	}
+	&__title {
+		font-size: 0.875rem;
+	}
+	&__icon {
+		pointer-events: none;
+		color: var(--mainRedColor);
+	}
+}
