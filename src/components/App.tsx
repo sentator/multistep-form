@@ -3,6 +3,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 
 import GeneralInformation from "./DeliveryForm/generalInformation/GeneralInformation";
 import Documents from "./DeliveryForm/documents/Documents";
+import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
 
 function App() {
 	const theme = createTheme({
@@ -121,8 +122,9 @@ function App() {
 							</li>
 						</ul>
 					</div>
-					{/* <GeneralInformation /> */}
-					<Documents />
+					<GeneralInformation />
+					{/* <Documents /> */}
+					{/* <StepAddress /> */}
 				</div>
 			</div>
 		</ThemeProvider>

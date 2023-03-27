@@ -9,6 +9,7 @@ import CardsInformation from "../../cardsInformation/CardsInformation";
 import SectionTracking from "../../sectionTracking/SectionTracking";
 
 import "./generalInformation.scss";
+import Button from "../../button/Button";
 
 export default function GeneralInformation() {
 	const { handleSubmit, control, watch } = useForm<{
@@ -105,9 +106,7 @@ export default function GeneralInformation() {
 				<SectionTracking name="trackNumber" id="input_track-number" control={control} />
 			</div>
 			<div className="general-information-form__row general-information-form__row--6">
-				<button className="general-information-form__btn-submit" type="submit">
-					Зберегти відправлення
-				</button>
+				<Button title="Зберегти відправлення" />
 			</div>
 		</form>
 	);
