@@ -80,12 +80,26 @@ function App() {
 			documents: {
 				valid: false,
 				dirty: false,
-				value: {},
+				value: {
+					invoice: "",
+					lastName: "",
+					firstName: "",
+					patronymicName: "",
+					passport: "",
+					birthDate: null,
+					passportIssueDate: null,
+					passportIssuedBy: "",
+					registrationAddress: "",
+					identificationNumber: "",
+				},
 			},
 			address: {
 				valid: false,
 				dirty: false,
-				value: {},
+				value: {
+					deliveryAddress: "",
+					phoneNumber: "",
+				},
 			},
 		},
 	};
