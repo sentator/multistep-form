@@ -5,9 +5,9 @@ import { ControlledInput } from "../../controlledInput/ControlledInput";
 import NavigationButton from "../../navigationButton/NavigationButton";
 import SectionInvoiceAttachment from "../sectionInvoiceAttachment/SectionInvoiceAttachment";
 
-import "./documents.scss";
+import "./stepDocuments.scss";
 
-export default function Documents() {
+export default function StepDocuments() {
 	const { handleSubmit, control } = useForm<{
 		invoice: FileList | "";
 		lastName: string;

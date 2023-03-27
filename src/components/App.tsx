@@ -1,8 +1,8 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import GeneralInformation from "./DeliveryForm/generalInformation/GeneralInformation";
-import Documents from "./DeliveryForm/documents/Documents";
+import StepGeneralInformation from "./DeliveryForm/stepGeneralInformation/StepGeneralInformation";
+import StepDocuments from "./DeliveryForm/stepDocuments/StepDocuments";
 import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
 
 function App() {
@@ -122,8 +122,8 @@ function App() {
 							</li>
 						</ul>
 					</div>
-					<GeneralInformation />
-					{/* <Documents /> */}
+					<StepGeneralInformation />
+					{/* <StepDocuments /> */}
 					{/* <StepAddress /> */}
 				</div>
 			</div>

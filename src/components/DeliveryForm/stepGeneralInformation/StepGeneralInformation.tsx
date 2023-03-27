@@ -7,11 +7,11 @@ import { ControlledInput } from "../../controlledInput/ControlledInput";
 import OrderComposition from "../orderComposition/OrderComposition";
 import CardsInformation from "../../cardsInformation/CardsInformation";
 import SectionTracking from "../../sectionTracking/SectionTracking";
-
-import "./generalInformation.scss";
 import Button from "../../button/Button";
 
-export default function GeneralInformation() {
+import "./stepGeneralInformation.scss";
+
+export default function StepGeneralInformation() {
 	const { handleSubmit, control, watch } = useForm<{
 		country: OptionItem | null;
 		shop: OptionItem | null;
