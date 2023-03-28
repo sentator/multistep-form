@@ -1,6 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
+import { StepAddressValues, UpdateFormValuesFunction } from "../../../types";
 import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import Button from "../../button/Button";
@@ -8,15 +9,15 @@ import NavigationButton from "../../navigationButton/NavigationButton";
 
 import "./stepAddress.scss";
 
-const StepAddress = () => {
-	const { handleSubmit, control } = useForm<{
-		deliveryAddress: string;
-		phoneNumber: string;
-	}>({
-		defaultValues: {
-			deliveryAddress: "",
-			phoneNumber: "",
-		},
+interface StepAddressProps {
+	formValues: StepAddressValues;
+	updateFormValues: UpdateFormValuesFunction;
+	moveToPrevStep: () => void;
+}
+
+const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues, moveToPrevStep }) => {
+	const { handleSubmit, control } = useForm<StepAddressValues>({
+		defaultValues: formValues,
 		mode: "onSubmit",
 	});
 
@@ -25,6 +26,8 @@ const StepAddress = () => {
 			className="address-form"
 			onSubmit={handleSubmit((data) => {
 				console.log("data ready to submit", data);
+				updateFormValues("address", data);
+				console.log("finish");
 			})}
 		>
 			<div className="address-form__row">
@@ -57,7 +60,7 @@ const StepAddress = () => {
 				</div>
 			</div>
 			<div className="address-form__row address-form__row--controls">
-				<NavigationButton title="Назад" iconPosition="left" type="button" />
+				<NavigationButton title="Назад" iconPosition="left" type="button" onClick={moveToPrevStep} />
 				<Button title="Зберегти відправлення" type="submit" />
 			</div>
 		</form>

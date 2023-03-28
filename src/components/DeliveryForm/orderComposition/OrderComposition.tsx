@@ -1,4 +1,5 @@
 import { FieldValues, Control, useFieldArray, ArrayPath } from "react-hook-form";
+import { ProductItem } from "../../../types";
 import OrderCompositionItem from "../orderCompositionItem/OrderCompositionItem";
 
 import "./orderComposition.scss";
@@ -33,6 +34,7 @@ const OrderComposition = <Field extends FieldValues>(props: OrderCompositionProp
 								isClearBtnVisible={itemsInOrder > 1}
 								removeItem={() => remove(index)}
 								currencySymbol={currencySymbol}
+								// currentPrice={}
 							/>
 						</li>
 					))}

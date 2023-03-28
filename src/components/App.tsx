@@ -1,6 +1,8 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
+import { DeliveryFormState, UpdateFormValuesFunction } from "../types";
+
 import StepGeneralInformation from "./DeliveryForm/stepGeneralInformation/StepGeneralInformation";
 import StepDocuments from "./DeliveryForm/stepDocuments/StepDocuments";
 import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
@@ -61,7 +63,7 @@ function App() {
 		},
 	];
 
-	const FORM_STATE = {
+	const FORM_STATE: DeliveryFormState = {
 		selectedIndex: 0,
 		steps: {
 			generalInformation: {
@@ -72,7 +74,7 @@ function App() {
 					shop: null,
 					parcelName: "",
 					orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
-					customsFees: [],
+					customsFees: [{ value: false }],
 					promocode: "",
 					trackNumber: "",
 				},
@@ -108,14 +110,67 @@ function App() {
 
 	const next = () => {
 		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex + 1 }));
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
 	const prev = () => {
 		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex - 1 }));
+		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
 	const setSelectedIndex = (index: number) => {
 		setForm((prevState) => ({ ...prevState, selectedIndex: index }));
+	};
+
+	const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
+		setForm((prevState) => ({
+			selectedIndex: prevState.selectedIndex,
+			steps: {
+				...prevState.steps,
+				[step]: {
+					...prevState.steps[step],
+					value: newValues,
+				},
+			},
+		}));
+	};
+
+	const renderStep = () => {
+		switch (form.selectedIndex) {
+			case 0:
+				return (
+					<StepGeneralInformation
+						formValues={form.steps.generalInformation.value}
+						updateFormValues={updateFormValues}
+						moveToNextStep={next}
+					/>
+				);
+			case 1:
+				return (
+					<StepDocuments
+						formValues={form.steps.documents.value}
+						updateFormValues={updateFormValues}
+						moveToPrevStep={prev}
+						moveToNextStep={next}
+					/>
+				);
+			case 2:
+				return (
+					<StepAddress
+						formValues={form.steps.address.value}
+						updateFormValues={updateFormValues}
+						moveToPrevStep={prev}
+					/>
+				);
+			default:
+				return (
+					<StepGeneralInformation
+						formValues={form.steps.generalInformation.value}
+						updateFormValues={updateFormValues}
+						moveToNextStep={next}
+					/>
+				);
+		}
 	};
 
 	return (
@@ -136,9 +191,7 @@ function App() {
 							</li>
 						</ul>
 					</div>
-					<StepGeneralInformation />
-					{/* <StepDocuments /> */}
-					{/* <StepAddress /> */}
+					{renderStep()}
 				</div>
 			</div>
 		</ThemeProvider>

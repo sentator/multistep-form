@@ -1,4 +1,5 @@
-import { ArrayPath, Path, FieldValues, Control } from "react-hook-form";
+import { ArrayPath, Path, FieldValues, Control, useFormState } from "react-hook-form";
+import { DeliveryFormState, StepGeneralInformationValues } from "../../../types";
 
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import { ControlledInputCounter } from "../../controlledInputCounter/ControlledInputCounter";
@@ -17,6 +18,7 @@ interface OrderCompositionItemProps<Field extends FieldValues> {
 
 const OrderCompositionItem = <Field extends FieldValues>(props: OrderCompositionItemProps<Field>) => {
 	const { index, name, control, isClearBtnVisible, removeItem, currencySymbol } = props;
+
 	return (
 		<div className="fields-product">
 			<div className="fields-product__name">
@@ -66,7 +68,7 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 				}
 			</div>
 			{isClearBtnVisible && (
-				<button className="fields-product__btn-clear" onClick={removeItem}>
+				<button className="fields-product__btn-clear" type="button" onClick={removeItem}>
 					<svg
 						fill="currentColor"
 						version="1.1"

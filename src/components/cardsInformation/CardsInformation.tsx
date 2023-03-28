@@ -15,11 +15,11 @@ interface CardsInformationProps<Field extends FieldValues> {
 
 const CardsInformation = <Field extends FieldValues>(props: CardsInformationProps<Field>) => {
 	const { name, control, formattedCustomsFees, isAgreementNeeded } = props;
-	const { fields, insert, remove } = useFieldArray({ name, control } as never);
+	const { fields, replace } = useFieldArray({ name, control } as never);
 
 	React.useEffect(() => {
-		isAgreementNeeded ? insert(0, false, { shouldFocus: false }) : remove(0);
-	}, [isAgreementNeeded]);
+		isAgreementNeeded ? replace({ value: true }) : replace({ value: false });
+	}, [isAgreementNeeded, replace]);
 
 	return (
 		<div className="cards-information">
