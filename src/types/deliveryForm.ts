@@ -27,13 +27,15 @@ export interface StepAddressValues {
 }
 
 interface DeliveryFormStep<T> {
-	valid: boolean;
-	dirty: boolean;
+	title: string;
+	status: "active" | "completed" | "hidden";
+	isExcluded: boolean;
 	value: T;
 }
 
 export interface DeliveryFormState {
-	selectedIndex: number;
+	selectedStepIndex: number;
+	requiredSteps: number[];
 	steps: {
 		generalInformation: DeliveryFormStep<StepGeneralInformationValues>;
 		documents: DeliveryFormStep<StepDocumentsValues>;
@@ -45,3 +47,9 @@ export type UpdateFormValuesFunction = (
 	step: keyof DeliveryFormState["steps"],
 	newValues: DeliveryFormState["steps"][typeof step]["value"]
 ) => void;
+
+export interface StepperBarItem {
+	label: string;
+	title: string;
+	status: "active" | "completed" | "hidden";
+}

@@ -4,6 +4,7 @@ import {
 	StepAddressValues,
 	DeliveryFormState,
 	UpdateFormValuesFunction,
+	StepperBarItem,
 } from "./deliveryForm";
 interface OptionItem {
 	id: string;
@@ -33,4 +34,5 @@ export type {
 	StepAddressValues,
 	DeliveryFormState,
 	UpdateFormValuesFunction,
+	StepperBarItem,
 };

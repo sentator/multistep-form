@@ -1,0 +1,48 @@
+.stepper-bar-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	&.active {
+		.stepper-bar-item__icon {
+			background-color: var(--mainRedColor);
+		}
+	}
+	&.hidden {
+		.stepper-bar-item__icon {
+			background-color: var(--mainWhiteColor);
+		}
+	}
+	&.completed {
+		.stepper-bar-item__icon {
+			background-color: var(--mainRedColor);
+		}
+		.stepper-bar-item__icon::before {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			content: "";
+			width: 20px;
+			height: 20px;
+			background-image: url(../../assets/images/icons/icon-check.svg);
+			background-repeat: no-repeat;
+			background-size: cover;
+			background-position: center;
+		}
+	}
+	/* .stepper-bar-item__icon */
+	&__icon {
+		position: relative;
+		flex: 0 0 24px;
+		height: 24px;
+		border-radius: 50%;
+		border: 1px solid var(--mainRedColor);
+	}
+	/* .stepper-bar-item__title */
+	&__title {
+		font-weight: 400;
+		font-size: 0.8125rem;
+		line-height: 150%;
+		color: var(--mainDarkColor);
+	}
+}
