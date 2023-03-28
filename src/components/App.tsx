@@ -1,8 +1,7 @@
 import React from "react";
 import { ThemeProvider, createTheme } from "@mui/material";
 
-import { DeliveryFormState, UpdateFormValuesFunction } from "../types";
-
+import { deliveryFormContext } from "../context";
 import StepGeneralInformation from "./DeliveryForm/stepGeneralInformation/StepGeneralInformation";
 import StepDocuments from "./DeliveryForm/stepDocuments/StepDocuments";
 import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
@@ -48,6 +47,8 @@ function App() {
 		},
 	});
 
+	const { formState, next, prev, setParticularStep, updateFormValues } = React.useContext(deliveryFormContext);
+
 	const FORM_STEPS = [
 		{
 			label: "generalInformation",
@@ -63,84 +64,12 @@ function App() {
 		},
 	];
 
-	const FORM_STATE: DeliveryFormState = {
-		selectedIndex: 0,
-		steps: {
-			generalInformation: {
-				valid: false,
-				dirty: false,
-				value: {
-					country: null,
-					shop: null,
-					parcelName: "",
-					orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
-					customsFees: [{ value: false }],
-					promocode: "",
-					trackNumber: "",
-				},
-			},
-			documents: {
-				valid: false,
-				dirty: false,
-				value: {
-					invoice: "",
-					lastName: "",
-					firstName: "",
-					patronymicName: "",
-					passport: "",
-					birthDate: null,
-					passportIssueDate: null,
-					passportIssuedBy: "",
-					registrationAddress: "",
-					identificationNumber: "",
-				},
-			},
-			address: {
-				valid: false,
-				dirty: false,
-				value: {
-					deliveryAddress: "",
-					phoneNumber: "",
-				},
-			},
-		},
-	};
-
-	const [form, setForm] = React.useState(FORM_STATE);
-
-	const next = () => {
-		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex + 1 }));
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const prev = () => {
-		setForm((prevState) => ({ ...prevState, selectedIndex: prevState.selectedIndex - 1 }));
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const setSelectedIndex = (index: number) => {
-		setForm((prevState) => ({ ...prevState, selectedIndex: index }));
-	};
-
-	const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
-		setForm((prevState) => ({
-			selectedIndex: prevState.selectedIndex,
-			steps: {
-				...prevState.steps,
-				[step]: {
-					...prevState.steps[step],
-					value: newValues,
-				},
-			},
-		}));
-	};
-
 	const renderStep = () => {
-		switch (form.selectedIndex) {
+		switch (formState.selectedIndex) {
 			case 0:
 				return (
 					<StepGeneralInformation
-						formValues={form.steps.generalInformation.value}
+						formValues={formState.steps.generalInformation.value}
 						updateFormValues={updateFormValues}
 						moveToNextStep={next}
 					/>
@@ -148,7 +77,7 @@ function App() {
 			case 1:
 				return (
 					<StepDocuments
-						formValues={form.steps.documents.value}
+						formValues={formState.steps.documents.value}
 						updateFormValues={updateFormValues}
 						moveToPrevStep={prev}
 						moveToNextStep={next}
@@ -157,7 +86,7 @@ function App() {
 			case 2:
 				return (
 					<StepAddress
-						formValues={form.steps.address.value}
+						formValues={formState.steps.address.value}
 						updateFormValues={updateFormValues}
 						moveToPrevStep={prev}
 					/>
@@ -165,7 +94,7 @@ function App() {
 			default:
 				return (
 					<StepGeneralInformation
-						formValues={form.steps.generalInformation.value}
+						formValues={formState.steps.generalInformation.value}
 						updateFormValues={updateFormValues}
 						moveToNextStep={next}
 					/>

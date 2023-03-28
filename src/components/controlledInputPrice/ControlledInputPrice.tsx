@@ -14,11 +14,12 @@ interface ControlledInputPriceProps<Field extends FieldValues> {
 	rules?: Omit<RegisterOptions<Field, Path<Field>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 	tooltip?: string;
 	currencySymbol?: string;
+	initialValue?: string;
 }
 
 export const ControlledInputPrice = <Field extends FieldValues>(props: ControlledInputPriceProps<Field>) => {
-	const { control, name, id, label, rules, tooltip, currencySymbol } = props;
-	const [localValue, setLocalValue] = React.useState<string | undefined>("0.00");
+	const { control, name, id, label, rules, tooltip, currencySymbol, initialValue } = props;
+	const [localValue, setLocalValue] = React.useState(initialValue);
 
 	return (
 		<Controller

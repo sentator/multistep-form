@@ -34,7 +34,6 @@ const OrderComposition = <Field extends FieldValues>(props: OrderCompositionProp
 								isClearBtnVisible={itemsInOrder > 1}
 								removeItem={() => remove(index)}
 								currencySymbol={currencySymbol}
-								// currentPrice={}
 							/>
 						</li>
 					))}
