@@ -1,5 +1,7 @@
+import React from "react";
 import { ArrayPath, Path, FieldValues, Control } from "react-hook-form";
 
+import { deliveryFormContext } from "../../../context";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import { ControlledInputCounter } from "../../controlledInputCounter/ControlledInputCounter";
 import { ControlledInputPrice } from "../../controlledInputPrice/ControlledInputPrice";
@@ -17,6 +19,18 @@ interface OrderCompositionItemProps<Field extends FieldValues> {
 
 const OrderCompositionItem = <Field extends FieldValues>(props: OrderCompositionItemProps<Field>) => {
 	const { index, name, control, isClearBtnVisible, removeItem, currencySymbol } = props;
+	const {
+		formState: {
+			steps: {
+				generalInformation: {
+					value: { orderComposition },
+				},
+			},
+		},
+	} = React.useContext(deliveryFormContext);
+
+	const initialPriceValue = orderComposition[index] ? orderComposition[index].totalPrice : "0.00";
+
 	return (
 		<div className="fields-product">
 			<div className="fields-product__name">
@@ -62,11 +76,12 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 						label="Вартість"
 						tooltip="Вартість вводьте з податками (tax), якщо вони є. Доставку до закордонного складу не враховуйте."
 						currencySymbol={currencySymbol}
+						initialValue={initialPriceValue}
 					/>
 				}
 			</div>
 			{isClearBtnVisible && (
-				<button className="fields-product__btn-clear" onClick={removeItem}>
+				<button className="fields-product__btn-clear" type="button" onClick={removeItem}>
 					<svg
 						fill="currentColor"
 						version="1.1"

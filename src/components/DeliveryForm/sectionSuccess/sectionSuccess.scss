@@ -1,0 +1,19 @@
+.section-success {
+	text-align: center;
+	&__title {
+		font-size: 3rem;
+		margin-bottom: 0.5em;
+		@media (max-width: 48em) {
+			font-size: 2rem;
+		}
+	}
+	&__body {
+		font-size: 1.25rem;
+		line-height: 130%;
+	}
+	&__text {
+		&:not(:last-child) {
+			margin-bottom: 0.25em;
+		}
+	}
+}

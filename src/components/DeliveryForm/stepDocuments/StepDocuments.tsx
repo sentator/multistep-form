@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { StepDocumentsValues, UpdateFormValuesFunction } from "../../../types";
 import { ControlledDatePicker } from "../../controlledDatePicker/ControlledDatePicker";
 
 import { ControlledInput } from "../../controlledInput/ControlledInput";
@@ -7,31 +8,21 @@ import SectionInvoiceAttachment from "../sectionInvoiceAttachment/SectionInvoice
 
 import "./stepDocuments.scss";
 
-export default function StepDocuments() {
-	const { handleSubmit, control } = useForm<{
-		invoice: FileList | "";
-		lastName: string;
-		firstName: string;
-		patronymicName: string;
-		passport: string;
-		birthDate: Date | null;
-		passportIssueDate: Date | null;
-		passportIssuedBy: string;
-		registrationAddress: string;
-		identificationNumber: string;
-	}>({
-		defaultValues: {
-			invoice: "",
-			lastName: "",
-			firstName: "",
-			patronymicName: "",
-			passport: "",
-			birthDate: null,
-			passportIssueDate: null,
-			passportIssuedBy: "",
-			registrationAddress: "",
-			identificationNumber: "",
-		},
+interface StepDocumentsProps {
+	formValues: StepDocumentsValues;
+	updateFormValues: UpdateFormValuesFunction;
+	moveToPrevStep: () => void;
+	moveToNextStep: () => void;
+}
+
+const StepDocuments: React.FC<StepDocumentsProps> = ({
+	formValues,
+	updateFormValues,
+	moveToPrevStep,
+	moveToNextStep,
+}) => {
+	const { handleSubmit, control } = useForm<StepDocumentsValues>({
+		defaultValues: formValues,
 		mode: "onSubmit",
 	});
 
@@ -39,7 +30,9 @@ export default function StepDocuments() {
 		<form
 			className="documents-form"
 			onSubmit={handleSubmit((data) => {
-				console.log("data ready to submit", data);
+				// console.log("data ready to submit", data);
+				updateFormValues("documents", data);
+				moveToNextStep();
 			})}
 		>
 			<div className="documents-form__invoice">
@@ -187,9 +180,11 @@ export default function StepDocuments() {
 				/>
 			</div>
 			<div className="documents-form__row documents-form__row--controls">
-				<NavigationButton title="Назад" iconPosition="left" type="button" />
+				<NavigationButton title="Назад" iconPosition="left" type="button" onClick={moveToPrevStep} />
 				<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
 			</div>
 		</form>
 	);
-}
+};
+
+export default StepDocuments;

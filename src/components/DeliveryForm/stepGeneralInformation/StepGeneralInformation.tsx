@@ -1,8 +1,9 @@
+import React from "react";
 import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
 import { useForm } from "react-hook-form";
 
 import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../utils";
-import { OptionItem, ProductItem } from "../../../types";
+import { StepGeneralInformationValues, UpdateFormValuesFunction } from "../../../types";
 import { ControlledInput } from "../../controlledInput/ControlledInput";
 import OrderComposition from "../orderComposition/OrderComposition";
 import CardsInformation from "../../cardsInformation/CardsInformation";
@@ -11,25 +12,23 @@ import Button from "../../button/Button";
 
 import "./stepGeneralInformation.scss";
 
-export default function StepGeneralInformation() {
-	const { handleSubmit, control, watch } = useForm<{
-		country: OptionItem | null;
-		shop: OptionItem | null;
-		parcelName: string;
-		orderComposition: ProductItem[];
-		customsFees: [{ value: boolean }];
-		promocode: string;
-		trackNumber: string;
-	}>({
-		defaultValues: {
-			country: null,
-			shop: null,
-			parcelName: "",
-			orderComposition: [{ productName: "", quantity: 1, totalPrice: "0.00" }],
-			customsFees: [],
-			promocode: "",
-			trackNumber: "",
-		},
+interface StepGeneralInformationProps {
+	formValues: StepGeneralInformationValues;
+	updateFormValues: UpdateFormValuesFunction;
+	moveToNextStep: () => void;
+	addStepDocuments: () => void;
+	removeStepDocuments: () => void;
+}
+
+const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
+	formValues,
+	updateFormValues,
+	moveToNextStep,
+	addStepDocuments,
+	removeStepDocuments,
+}) => {
+	const { handleSubmit, control, watch } = useForm<StepGeneralInformationValues>({
+		defaultValues: formValues,
 		mode: "onSubmit",
 	});
 
@@ -44,11 +43,17 @@ export default function StepGeneralInformation() {
 	const formattedTotalPrice = getFormattedPrice(totalPrice, currencySymbol);
 	const formattedCustomsFees = getFormattedPrice(customsFees, currencySymbol);
 
+	React.useEffect(() => {
+		!!customsFees ? addStepDocuments() : removeStepDocuments();
+	}, [customsFees]);
+
 	return (
 		<form
 			className="general-information-form"
 			onSubmit={handleSubmit((data) => {
-				console.log("data ready to submit", data);
+				// console.log("data ready to submit", data);
+				updateFormValues("generalInformation", data);
+				moveToNextStep();
 			})}
 		>
 			<div className="general-information-form__row general-information-form__row--1">
@@ -106,8 +111,9 @@ export default function StepGeneralInformation() {
 				<SectionTracking name="trackNumber" id="input_track-number" control={control} />
 			</div>
 			<div className="general-information-form__row general-information-form__row--6">
-				<Button title="Зберегти відправлення" />
+				<Button title="Зберегти відправлення" type="submit" />
 			</div>
 		</form>
 	);
-}
+};
+export default StepGeneralInformation;
