@@ -46,6 +46,11 @@
 	}
 	/* .stepper-bar__item */
 	&__item {
+		pointer-events: none;
+		cursor: pointer;
+		&[data-clickable="true"] {
+			pointer-events: all;
+		}
 	}
 	/* .stepper-bar__line */
 	&__line {

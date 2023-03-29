@@ -52,7 +52,7 @@ interface DeliveryFormContext {
 	formSteps: StepperBarItem[];
 	next: () => void;
 	prev: () => void;
-	setParticularStep: (index: number) => void;
+	moveToStep: (index: number) => void;
 	updateFormValues: UpdateFormValuesFunction;
 	renderStep: () => React.ReactNode;
 	isFormConfirmed: boolean;
@@ -63,7 +63,7 @@ export const deliveryFormContext = React.createContext<DeliveryFormContext>({
 	formSteps: FORM_DEFAULT_STEPS,
 	next: () => {},
 	prev: () => {},
-	setParticularStep: (index) => {},
+	moveToStep: (index) => {},
 	updateFormValues: (step, newValues) => {},
 	renderStep: () => null,
 	isFormConfirmed: false,
@@ -153,8 +153,27 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 		setStepDocumentsRequired(false);
 	};
 
-	const setParticularStep = (index: number) => {
-		// setFormState((prevState) => ({ ...prevState, selectedStepIndex: index }));
+	const moveToStep = (index: number) => {
+		setFormSteps((prevState) =>
+			prevState.map((step, i) => {
+				if (i === index) {
+					return {
+						...step,
+						status: "active",
+					};
+				}
+
+				if (i > index) {
+					return {
+						...step,
+						status: "hidden",
+					};
+				}
+
+				return { ...step };
+			})
+		);
+		setFormState((prevState) => ({ ...prevState, selectedStepIndex: index }));
 	};
 
 	const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
@@ -258,7 +277,7 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 				formSteps,
 				next,
 				prev,
-				setParticularStep,
+				moveToStep,
 				updateFormValues,
 				renderStep,
 				isFormConfirmed,

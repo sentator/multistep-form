@@ -45,7 +45,7 @@ function App() {
 		},
 	});
 
-	const { formSteps, setParticularStep, renderStep, isFormConfirmed } = React.useContext(deliveryFormContext);
+	const { formSteps, moveToStep, renderStep, isFormConfirmed } = React.useContext(deliveryFormContext);
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="app">
@@ -54,7 +54,7 @@ function App() {
 						<>
 							<h1 className="app__title title">Нове відправлення</h1>
 							<div className="app__stepper-bar">
-								<StepperBar steps={formSteps} />
+								<StepperBar steps={formSteps} moveToStep={moveToStep} />
 							</div>
 						</>
 					)}

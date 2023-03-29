@@ -10,6 +10,9 @@
 		&:focus-visible + .controlled-input-file__label {
 			outline: 2px solid var(--mainFocusColor);
 		}
+		&[data-error="true"]:focus-visible + .controlled-input-file__label {
+			outline-color: var(--mainRedColor);
+		}
 	}
 	/* .controlled-input-file__label */
 	&__label {
