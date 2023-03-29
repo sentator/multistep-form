@@ -8,10 +8,9 @@ import "./stepperBar.scss";
 
 interface StepperBarProps {
 	steps: StepperBarItemType[];
-	moveToStep: (index: number) => void;
 }
 
-const StepperBar: React.FC<StepperBarProps> = ({ steps, moveToStep }) => {
+const StepperBar: React.FC<StepperBarProps> = ({ steps }) => {
 	const listClassnames = clsx("stepper-bar__list", {
 		"stepper-bar__list--2-steps": steps.length === 2,
 		"stepper-bar__list--3-steps": steps.length === 3,
@@ -25,7 +24,7 @@ const StepperBar: React.FC<StepperBarProps> = ({ steps, moveToStep }) => {
 						{index !== 0 && <li className="stepper-bar__line" aria-hidden></li>}
 						<li
 							className="stepper-bar__item"
-							onClick={() => moveToStep(index)}
+							// onClick={() => moveToStep(index)}
 							data-clickable={step.status === "completed"}
 						>
 							<StepperBarItem {...step} />

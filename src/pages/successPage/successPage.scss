@@ -1,0 +1,26 @@
+.page-success {
+	text-align: center;
+	&__title {
+		font-size: 3rem;
+		margin-bottom: 0.5em;
+		@media (max-width: 48em) {
+			font-size: 2rem;
+		}
+	}
+	&__body {
+		font-size: 1.25rem;
+		line-height: 130%;
+		&:not(:last-child) {
+			margin-bottom: 2em;
+		}
+	}
+	&__text {
+		&:not(:last-child) {
+			margin-bottom: 0.25em;
+		}
+	}
+	&__footer {
+		display: flex;
+		justify-content: center;
+	}
+}

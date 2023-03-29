@@ -1,10 +1,7 @@
 import React from "react";
-import { ThemeProvider, createTheme } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
 
-import { deliveryFormContext } from "../context";
-import StepperBar from "./stepperBar/StepperBar";
-
-function App() {
+const MuiThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 	const theme = createTheme({
 		components: {
 			MuiAutocomplete: {
@@ -44,25 +41,7 @@ function App() {
 			},
 		},
 	});
+	return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};
 
-	const { formSteps, moveToStep, renderStep, isFormConfirmed } = React.useContext(deliveryFormContext);
-	return (
-		<ThemeProvider theme={theme}>
-			<div className="app">
-				<div className="container">
-					{!isFormConfirmed && (
-						<>
-							<h1 className="app__title title">Нове відправлення</h1>
-							<div className="app__stepper-bar">
-								<StepperBar steps={formSteps} moveToStep={moveToStep} />
-							</div>
-						</>
-					)}
-					<div className="app__form-step">{renderStep()}</div>
-				</div>
-			</div>
-		</ThemeProvider>
-	);
-}
-
-export default App;
+export default MuiThemeProvider;

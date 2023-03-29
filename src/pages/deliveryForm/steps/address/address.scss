@@ -1,0 +1,31 @@
+.address-form {
+	&__row {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 10px;
+		&:not(:last-child) {
+			margin-bottom: 20px;
+		}
+		@media (max-width: 48em) {
+			grid-template-columns: auto;
+			gap: 20px;
+		}
+	}
+	&__row--controls {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+		@media (max-width: 48em) {
+			flex-direction: column;
+			.navigation-btn {
+				align-self: flex-start;
+			}
+			.button {
+				width: 100%;
+			}
+		}
+	}
+	&__column {
+	}
+}
