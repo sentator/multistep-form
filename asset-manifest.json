@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/multistep-form/static/css/main.a639321d.css",
+    "main.js": "/multistep-form/static/js/main.860b7131.js",
+    "static/media/Inter-Medium.woff2": "/multistep-form/static/media/Inter-Medium.aad19453767e5305b7b5.woff2",
+    "static/media/Inter-Regular.woff2": "/multistep-form/static/media/Inter-Regular.f985216ffbdce15f6f87.woff2",
+    "static/media/NovaPoshta-Medium.woff2": "/multistep-form/static/media/NovaPoshta-Medium.08d01b68789016d17ff4.woff2",
+    "static/media/us.svg": "/multistep-form/static/media/us.0b490cac0f14ed3027d5dced322496ec.svg",
+    "static/media/de.svg": "/multistep-form/static/media/de.2235d2885511c7489cb0491bdb1e2563.svg",
+    "static/media/es.svg": "/multistep-form/static/media/es.c660676e25f1ab3b0b303e7b1baafd44.svg",
+    "static/media/gb.svg": "/multistep-form/static/media/gb.0fa76396bbe7c4554574d26ab1d87d6b.svg",
+    "static/media/tr.svg": "/multistep-form/static/media/tr.2cec4d749d71b435802fc4dee133d45e.svg",
+    "static/media/icon-check.svg": "/multistep-form/static/media/icon-check.35cbcb8d5691d4bf8144.svg",
+    "index.html": "/multistep-form/index.html",
+    "static/media/calendar.svg": "/multistep-form/static/media/calendar.3d1354015d413fe1334d.svg",
+    "static/media/cz.svg": "/multistep-form/static/media/cz.fa611687a63e4a24acab111dd288e349.svg",
+    "static/media/fr.svg": "/multistep-form/static/media/fr.0475e96db6e499b5f4a208999c636457.svg",
+    "static/media/it.svg": "/multistep-form/static/media/it.dcace73e33074cb5a38e6d88f3281dea.svg",
+    "static/media/pl.svg": "/multistep-form/static/media/pl.96eca6db5f5fbf57ff835da52ed15b10.svg",
+    "main.a639321d.css.map": "/multistep-form/static/css/main.a639321d.css.map",
+    "main.860b7131.js.map": "/multistep-form/static/js/main.860b7131.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a639321d.css",
+    "static/js/main.860b7131.js"
+  ]
+}
