@@ -18,7 +18,7 @@ const CardsInformation = <Field extends FieldValues>(props: CardsInformationProp
 	const { fields, replace } = useFieldArray({ name, control } as never);
 
 	React.useEffect(() => {
-		isAgreementNeeded ? replace({ value: true }) : replace({ value: false });
+		isAgreementNeeded ? replace([{ value: true }]) : replace([{ value: false }]);
 	}, [isAgreementNeeded, replace]);
 
 	return (

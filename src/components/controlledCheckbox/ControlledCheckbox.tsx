@@ -26,9 +26,10 @@ export const ControlledCheckbox = <Field extends FieldValues>(props: ControlledC
 								className="controlled-checkbox__input visually-hidden"
 								type="checkbox"
 								id={id}
+								{...field}
 								data-checked={field.value}
 								data-error={!!error}
-								{...field}
+								checked={field.value}
 							/>
 							<label className="controlled-checkbox__label" htmlFor={id}>
 								<svg
