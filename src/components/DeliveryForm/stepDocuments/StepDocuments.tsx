@@ -35,9 +35,9 @@ const StepDocuments: React.FC<StepDocumentsProps> = ({
 				moveToNextStep();
 			})}
 		>
-			{/* <div className="documents-form__invoice">
+			<div className="documents-form__invoice">
 				<SectionInvoiceAttachment control={control} name="invoice" id="input_invoice" />
-			</div> */}
+			</div>
 			<div className="documents-form__row documents-form__row--2-columns">
 				<div className="documents-form__column">
 					<ControlledInput

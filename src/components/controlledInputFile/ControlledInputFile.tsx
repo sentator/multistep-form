@@ -27,6 +27,7 @@ export const ControlledInputFile = <Field extends FieldValues>(props: Controlled
 							<input
 								type="file"
 								{...field}
+								value={undefined}
 								className="controlled-input-file__input visually-hidden"
 								id={id}
 								data-error={!!error}
