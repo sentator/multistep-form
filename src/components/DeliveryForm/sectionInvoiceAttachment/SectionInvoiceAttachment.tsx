@@ -30,6 +30,7 @@ const SectionInvoiceAttachment = <Field extends FieldValues>(props: SectionInvoi
 					name={name}
 					id={id}
 					label="Завантажити файли"
+					acceptedFormats={acceptedFormats.join(", ")}
 					rules={{
 						required: "Файл рахунку-фактури є обов'язковим.",
 						// 	validate: {

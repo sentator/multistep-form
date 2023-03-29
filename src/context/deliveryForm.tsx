@@ -22,7 +22,7 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 		},
 		documents: {
 			value: {
-				invoice: "",
+				invoice: null,
 				lastName: "",
 				firstName: "",
 				patronymicName: "",

@@ -10,7 +10,7 @@ export interface StepGeneralInformationValues {
 	trackNumber: string;
 }
 export interface StepDocumentsValues {
-	invoice: FileList | "";
+	invoice: File[] | null;
 	lastName: string;
 	firstName: string;
 	patronymicName: string;
