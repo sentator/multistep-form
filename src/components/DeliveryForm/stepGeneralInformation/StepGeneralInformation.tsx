@@ -1,3 +1,4 @@
+import React from "react";
 import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
 import { useForm } from "react-hook-form";
 
@@ -15,12 +16,16 @@ interface StepGeneralInformationProps {
 	formValues: StepGeneralInformationValues;
 	updateFormValues: UpdateFormValuesFunction;
 	moveToNextStep: () => void;
+	addStepDocuments: () => void;
+	removeStepDocuments: () => void;
 }
 
 const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
 	formValues,
 	updateFormValues,
 	moveToNextStep,
+	addStepDocuments,
+	removeStepDocuments,
 }) => {
 	const { handleSubmit, control, watch } = useForm<StepGeneralInformationValues>({
 		defaultValues: formValues,
@@ -38,11 +43,15 @@ const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
 	const formattedTotalPrice = getFormattedPrice(totalPrice, currencySymbol);
 	const formattedCustomsFees = getFormattedPrice(customsFees, currencySymbol);
 
+	React.useEffect(() => {
+		!!customsFees ? addStepDocuments() : removeStepDocuments();
+	}, [customsFees]);
+
 	return (
 		<form
 			className="general-information-form"
 			onSubmit={handleSubmit((data) => {
-				console.log("data ready to submit", data);
+				// console.log("data ready to submit", data);
 				updateFormValues("generalInformation", data);
 				moveToNextStep();
 			})}

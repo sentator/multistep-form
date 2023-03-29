@@ -3,9 +3,6 @@ import { ThemeProvider, createTheme } from "@mui/material";
 
 import { deliveryFormContext } from "../context";
 import StepperBar from "./stepperBar/StepperBar";
-import StepGeneralInformation from "./DeliveryForm/stepGeneralInformation/StepGeneralInformation";
-import StepDocuments from "./DeliveryForm/stepDocuments/StepDocuments";
-import StepAddress from "./DeliveryForm/stepAddress/StepAddress";
 
 function App() {
 	const theme = createTheme({
@@ -48,70 +45,19 @@ function App() {
 		},
 	});
 
-	const { formState, stepperBarValues, next, prev, setParticularStep, updateFormValues } =
-		React.useContext(deliveryFormContext);
-
-	const FORM_STEPS = [
-		{
-			label: "generalInformation",
-			title: "Інформація про відправлення",
-		},
-		{
-			label: "documents",
-			title: "Документи",
-		},
-		{
-			label: "address",
-			title: "Адреса отримання",
-		},
-	];
-
-	const renderStep = () => {
-		switch (formState.selectedStepIndex) {
-			case 0:
-				return (
-					<StepGeneralInformation
-						formValues={formState.steps.generalInformation.value}
-						updateFormValues={updateFormValues}
-						moveToNextStep={next}
-					/>
-				);
-			case 1:
-				return (
-					<StepDocuments
-						formValues={formState.steps.documents.value}
-						updateFormValues={updateFormValues}
-						moveToPrevStep={prev}
-						moveToNextStep={next}
-					/>
-				);
-			case 2:
-				return (
-					<StepAddress
-						formValues={formState.steps.address.value}
-						updateFormValues={updateFormValues}
-						moveToPrevStep={prev}
-					/>
-				);
-			default:
-				return (
-					<StepGeneralInformation
-						formValues={formState.steps.generalInformation.value}
-						updateFormValues={updateFormValues}
-						moveToNextStep={next}
-					/>
-				);
-		}
-	};
-
+	const { formSteps, setParticularStep, renderStep, isFormConfirmed } = React.useContext(deliveryFormContext);
 	return (
 		<ThemeProvider theme={theme}>
 			<div className="app">
 				<div className="container">
-					<h1 className="app__title title">Нове відправлення</h1>
-					<div className="app__stepper-bar">
-						<StepperBar steps={stepperBarValues} />
-					</div>
+					{!isFormConfirmed && (
+						<>
+							<h1 className="app__title title">Нове відправлення</h1>
+							<div className="app__stepper-bar">
+								<StepperBar steps={formSteps} />
+							</div>
+						</>
+					)}
 					<div className="app__form-step">{renderStep()}</div>
 				</div>
 			</div>

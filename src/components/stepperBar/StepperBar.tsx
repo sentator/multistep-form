@@ -5,7 +5,6 @@ import { StepperBarItem as StepperBarItemType } from "../../types";
 import StepperBarItem from "../stepperBarItem/StepperBarItem";
 
 import "./stepperBar.scss";
-// states: active, completed, hidden
 
 interface StepperBarProps {
 	steps: StepperBarItemType[];
@@ -27,15 +26,6 @@ const StepperBar: React.FC<StepperBarProps> = ({ steps }) => {
 						</li>
 					</React.Fragment>
 				))}
-				{/* <li className="stepper-bar__item active">
-					<span className="stepper-bar__item-icon"></span>
-					<span className="stepper-bar__item-title">Інформація про відправлення</span>
-				</li>
-				<li className="stepper-bar__line"></li>
-				<li className="stepper-bar__item">
-					<span className="stepper-bar__item-icon"></span>
-					<span className="stepper-bar__item-title">Адреса отримання</span>
-				</li> */}
 			</ul>
 		</div>
 	);

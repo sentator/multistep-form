@@ -27,15 +27,14 @@ export interface StepAddressValues {
 }
 
 interface DeliveryFormStep<T> {
-	title: string;
-	status: "active" | "completed" | "hidden";
-	isExcluded: boolean;
+	// title: string;
+	// status: "active" | "completed" | "hidden";
+	// isExcluded: boolean;
 	value: T;
 }
 
 export interface DeliveryFormState {
 	selectedStepIndex: number;
-	requiredSteps: number[];
 	steps: {
 		generalInformation: DeliveryFormStep<StepGeneralInformationValues>;
 		documents: DeliveryFormStep<StepDocumentsValues>;

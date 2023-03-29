@@ -1,16 +1,15 @@
 import React from "react";
 
 import { DeliveryFormState, StepperBarItem, UpdateFormValuesFunction } from "../types";
-import { prepareStepperBarValues } from "../utils";
+import StepAddress from "../components/DeliveryForm/stepAddress/StepAddress";
+import StepDocuments from "../components/DeliveryForm/stepDocuments/StepDocuments";
+import StepGeneralInformation from "../components/DeliveryForm/stepGeneralInformation/StepGeneralInformation";
+import SectionSuccess from "../components/DeliveryForm/sectionSuccess/SectionSuccess";
 
 const FORM_DEFAULT_STATE: DeliveryFormState = {
 	selectedStepIndex: 0,
-	requiredSteps: [0, 2],
 	steps: {
 		generalInformation: {
-			title: "Інформація про відправлення",
-			status: "active",
-			isExcluded: false,
 			value: {
 				country: null,
 				shop: null,
@@ -22,9 +21,6 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 			},
 		},
 		documents: {
-			title: "Документи",
-			status: "hidden",
-			isExcluded: false,
 			value: {
 				invoice: "",
 				lastName: "",
@@ -39,9 +35,6 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 			},
 		},
 		address: {
-			title: "Адреса отримання",
-			status: "hidden",
-			isExcluded: false,
 			value: {
 				deliveryAddress: "",
 				phoneNumber: "",
@@ -49,23 +42,31 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 		},
 	},
 };
+const FORM_DEFAULT_STEPS: StepperBarItem[] = [
+	{ label: "generalInformation", title: "Інформація про відправлення", status: "active" },
+	{ label: "address", title: "Адреса отримання", status: "hidden" },
+];
 
 interface DeliveryFormContext {
 	formState: DeliveryFormState;
-	stepperBarValues: StepperBarItem[];
+	formSteps: StepperBarItem[];
 	next: () => void;
 	prev: () => void;
 	setParticularStep: (index: number) => void;
 	updateFormValues: UpdateFormValuesFunction;
+	renderStep: () => React.ReactNode;
+	isFormConfirmed: boolean;
 }
 
 export const deliveryFormContext = React.createContext<DeliveryFormContext>({
 	formState: FORM_DEFAULT_STATE,
-	stepperBarValues: [],
+	formSteps: FORM_DEFAULT_STEPS,
 	next: () => {},
 	prev: () => {},
 	setParticularStep: (index) => {},
 	updateFormValues: (step, newValues) => {},
+	renderStep: () => null,
+	isFormConfirmed: false,
 });
 
 interface ContextProps {
@@ -74,41 +75,88 @@ interface ContextProps {
 
 const Context: React.FC<ContextProps> = ({ children }) => {
 	const [formState, setFormState] = React.useState<DeliveryFormState>(FORM_DEFAULT_STATE);
-
-	const stepperBarValues = prepareStepperBarValues(formState.steps);
+	const [isStepDocumentsRequired, setStepDocumentsRequired] = React.useState<boolean>(false);
+	const [formSteps, setFormSteps] = React.useState<StepperBarItem[]>(FORM_DEFAULT_STEPS);
+	const [isFormConfirmed, setFormConfirmed] = React.useState<boolean>(false);
 
 	const next = () => {
-		let nextStepIndex = formState.selectedStepIndex + 1;
-
-		if (!formState.requiredSteps.includes(nextStepIndex) && nextStepIndex <= formState.requiredSteps.length) {
-			nextStepIndex += 1;
-		}
-
+		const currentStepIndex = formState.selectedStepIndex;
+		const nextStepIndex = currentStepIndex + 1;
+		setFormSteps((prevState) =>
+			prevState.map((step, index) => {
+				switch (index) {
+					case currentStepIndex:
+						return {
+							...step,
+							status: "completed",
+						};
+					case nextStepIndex:
+						return {
+							...step,
+							status: "active",
+						};
+					default:
+						return {
+							...step,
+						};
+				}
+			})
+		);
 		setFormState((prevState) => ({ ...prevState, selectedStepIndex: nextStepIndex }));
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
 	const prev = () => {
-		setFormState((prevState) => ({ ...prevState, selectedStepIndex: prevState.selectedStepIndex - 1 }));
+		const currentStepIndex = formState.selectedStepIndex;
+		const prevStepIndex = currentStepIndex - 1;
+		setFormSteps((prevState) =>
+			prevState.map((step, index) => {
+				switch (index) {
+					case currentStepIndex:
+						return {
+							...step,
+							status: "hidden",
+						};
+					case prevStepIndex:
+						return {
+							...step,
+							status: "active",
+						};
+					default:
+						return {
+							...step,
+						};
+				}
+			})
+		);
+		setFormState((prevState) => ({ ...prevState, selectedStepIndex: prevStepIndex }));
 		window.scrollTo({ top: 0, behavior: "smooth" });
 	};
 
-	const setParticularStep = (index: number) => {
-		setFormState((prevState) => ({ ...prevState, selectedStepIndex: index }));
+	const showSuccessPage = () => {
+		setFormConfirmed(true);
 	};
 
-	// const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
-	// 	setFormState((prevState) => ({
-	// 		selectedIndex: prevState.selectedIndex,
-	// 		steps: {
-	// 			...prevState.steps,
-	// 			[step]: {
-	// 				...prevState.steps[step],
-	// 				value: newValues,
-	// 			},
-	// 		},
-	// 	}));
-	// };
+	const addStepDocuments = () => {
+		const newStepsArray = [...formSteps];
+
+		if (!newStepsArray.find((step) => step.label === "documents")) {
+			newStepsArray.splice(1, 0, { label: "documents", title: "Документи", status: "hidden" });
+		}
+
+		setStepDocumentsRequired(true);
+		setFormSteps(newStepsArray);
+	};
+
+	const removeStepDocuments = () => {
+		setFormSteps((prevState) => prevState.filter((step) => step.label !== "documents"));
+		setStepDocumentsRequired(false);
+	};
+
+	const setParticularStep = (index: number) => {
+		// setFormState((prevState) => ({ ...prevState, selectedStepIndex: index }));
+	};
+
 	const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
 		setFormState((prevState) => ({
 			...prevState,
@@ -116,16 +164,105 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 				...prevState.steps,
 				[step]: {
 					...prevState.steps[step],
-					status: "completed",
 					value: newValues,
 				},
 			},
 		}));
 	};
 
+	const renderStep = (): React.ReactNode => {
+		if (isFormConfirmed) {
+			return <SectionSuccess />;
+		}
+
+		if (isStepDocumentsRequired) {
+			switch (formState.selectedStepIndex) {
+				case 0:
+					return (
+						<StepGeneralInformation
+							formValues={formState.steps.generalInformation.value}
+							updateFormValues={updateFormValues}
+							moveToNextStep={next}
+							addStepDocuments={addStepDocuments}
+							removeStepDocuments={removeStepDocuments}
+						/>
+					);
+				case 1:
+					return (
+						<StepDocuments
+							formValues={formState.steps.documents.value}
+							updateFormValues={updateFormValues}
+							moveToPrevStep={prev}
+							moveToNextStep={next}
+						/>
+					);
+				case 2:
+					return (
+						<StepAddress
+							formValues={formState.steps.address.value}
+							updateFormValues={updateFormValues}
+							moveToPrevStep={prev}
+							moveToNextStep={showSuccessPage}
+						/>
+					);
+				default:
+					return (
+						<StepGeneralInformation
+							formValues={formState.steps.generalInformation.value}
+							updateFormValues={updateFormValues}
+							moveToNextStep={next}
+							addStepDocuments={addStepDocuments}
+							removeStepDocuments={removeStepDocuments}
+						/>
+					);
+			}
+		}
+
+		switch (formState.selectedStepIndex) {
+			case 0:
+				return (
+					<StepGeneralInformation
+						formValues={formState.steps.generalInformation.value}
+						updateFormValues={updateFormValues}
+						moveToNextStep={next}
+						addStepDocuments={addStepDocuments}
+						removeStepDocuments={removeStepDocuments}
+					/>
+				);
+			case 1:
+				return (
+					<StepAddress
+						formValues={formState.steps.address.value}
+						updateFormValues={updateFormValues}
+						moveToPrevStep={prev}
+						moveToNextStep={showSuccessPage}
+					/>
+				);
+			default:
+				return (
+					<StepGeneralInformation
+						formValues={formState.steps.generalInformation.value}
+						updateFormValues={updateFormValues}
+						moveToNextStep={next}
+						addStepDocuments={addStepDocuments}
+						removeStepDocuments={removeStepDocuments}
+					/>
+				);
+		}
+	};
+
 	return (
 		<deliveryFormContext.Provider
-			value={{ formState, stepperBarValues, next, prev, setParticularStep, updateFormValues }}
+			value={{
+				formState,
+				formSteps,
+				next,
+				prev,
+				setParticularStep,
+				updateFormValues,
+				renderStep,
+				isFormConfirmed,
+			}}
 		>
 			{children}
 		</deliveryFormContext.Provider>

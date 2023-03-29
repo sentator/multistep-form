@@ -30,7 +30,7 @@ const StepDocuments: React.FC<StepDocumentsProps> = ({
 		<form
 			className="documents-form"
 			onSubmit={handleSubmit((data) => {
-				console.log("data ready to submit", data);
+				// console.log("data ready to submit", data);
 				updateFormValues("documents", data);
 				moveToNextStep();
 			})}

@@ -13,9 +13,10 @@ interface StepAddressProps {
 	formValues: StepAddressValues;
 	updateFormValues: UpdateFormValuesFunction;
 	moveToPrevStep: () => void;
+	moveToNextStep: () => void;
 }
 
-const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues, moveToPrevStep }) => {
+const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues, moveToPrevStep, moveToNextStep }) => {
 	const { handleSubmit, control } = useForm<StepAddressValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
@@ -25,9 +26,10 @@ const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues,
 		<form
 			className="address-form"
 			onSubmit={handleSubmit((data) => {
-				console.log("data ready to submit", data);
+				// console.log("data ready to submit", data);
 				updateFormValues("address", data);
-				console.log("finish");
+				moveToNextStep();
+				console.log("finished successed!");
 			})}
 		>
 			<div className="address-form__row">
