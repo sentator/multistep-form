@@ -1,35 +1,45 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-import { StepAddressValues, UpdateFormValuesFunction } from "../../../types";
-import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
-import { ControlledInput } from "../../controlledInput/ControlledInput";
-import Button from "../../button/Button";
-import NavigationButton from "../../navigationButton/NavigationButton";
+import { StepAddressValues, UpdateFormValuesFunction } from "../../../../types";
+import { ControlledAutocomplete } from "../../../../components/controlledAutocomplete/ControlledAutocomplete";
+import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import NavigationLink from "../../../../components/navigationLink/NavigationLink";
+import Button from "../../../../components/button/Button";
 
-import "./stepAddress.scss";
+import "./address.scss";
 
-interface StepAddressProps {
+interface AddressProps {
 	formValues: StepAddressValues;
 	updateFormValues: UpdateFormValuesFunction;
-	moveToPrevStep: () => void;
-	moveToNextStep: () => void;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
+	prevStepUrl: string;
+	nextStepUrl: string;
+	onSuccessSubmission: () => void;
 }
 
-const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues, moveToPrevStep, moveToNextStep }) => {
+const Address: React.FC<AddressProps> = ({
+	formValues,
+	updateFormValues,
+	updateFormStepsStatus,
+	prevStepUrl,
+	nextStepUrl,
+	onSuccessSubmission,
+}) => {
 	const { handleSubmit, control } = useForm<StepAddressValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
 	});
+	const navigate = useNavigate();
 
 	return (
 		<form
 			className="address-form"
 			onSubmit={handleSubmit((data) => {
-				// console.log("data ready to submit", data);
 				updateFormValues("address", data);
-				moveToNextStep();
-				console.log("finished successed!");
+				onSuccessSubmission();
+				navigate(nextStepUrl);
 			})}
 		>
 			<div className="address-form__row">
@@ -62,11 +72,11 @@ const StepAddress: React.FC<StepAddressProps> = ({ formValues, updateFormValues,
 				</div>
 			</div>
 			<div className="address-form__row address-form__row--controls">
-				<NavigationButton title="Назад" iconPosition="left" type="button" onClick={moveToPrevStep} />
+				<NavigationLink title="Назад" to={prevStepUrl} onClick={() => updateFormStepsStatus("prev")} />
 				<Button title="Зберегти відправлення" type="submit" />
 			</div>
 		</form>
 	);
 };
 
-export default StepAddress;
+export default Address;

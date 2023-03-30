@@ -1,30 +1,27 @@
 import { useForm } from "react-hook-form";
-import { StepDocumentsValues, UpdateFormValuesFunction } from "../../../types";
-import { ControlledDatePicker } from "../../controlledDatePicker/ControlledDatePicker";
+import { useNavigate } from "react-router";
 
-import { ControlledInput } from "../../controlledInput/ControlledInput";
-import NavigationButton from "../../navigationButton/NavigationButton";
-import SectionInvoiceAttachment from "../sectionInvoiceAttachment/SectionInvoiceAttachment";
+import { StepDocumentsValues, UpdateFormValuesFunction } from "../../../../types";
+import { ControlledDatePicker } from "../../../../components/controlledDatePicker/ControlledDatePicker";
+import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import NavigationButton from "../../../../components/navigationButton/NavigationButton";
+import NavigationLink from "../../../../components/navigationLink/NavigationLink";
+import SectionInvoiceAttachment from "../../../../components/sectionInvoiceAttachment/SectionInvoiceAttachment";
 
-import "./stepDocuments.scss";
+import "./documents.scss";
 
-interface StepDocumentsProps {
+interface DocumentsProps {
 	formValues: StepDocumentsValues;
 	updateFormValues: UpdateFormValuesFunction;
-	moveToPrevStep: () => void;
-	moveToNextStep: () => void;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
 }
 
-const StepDocuments: React.FC<StepDocumentsProps> = ({
-	formValues,
-	updateFormValues,
-	moveToPrevStep,
-	moveToNextStep,
-}) => {
+const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues, updateFormStepsStatus }) => {
 	const { handleSubmit, control } = useForm<StepDocumentsValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
 	});
+	const navigate = useNavigate();
 
 	return (
 		<form
@@ -32,7 +29,8 @@ const StepDocuments: React.FC<StepDocumentsProps> = ({
 			onSubmit={handleSubmit((data) => {
 				// console.log("data ready to submit", data);
 				updateFormValues("documents", data);
-				moveToNextStep();
+				updateFormStepsStatus("next");
+				navigate("/new-order/address");
 			})}
 		>
 			<div className="documents-form__invoice">
@@ -180,11 +178,15 @@ const StepDocuments: React.FC<StepDocumentsProps> = ({
 				/>
 			</div>
 			<div className="documents-form__row documents-form__row--controls">
-				<NavigationButton title="Назад" iconPosition="left" type="button" onClick={moveToPrevStep} />
+				<NavigationLink
+					title="Назад"
+					to="/new-order/generalInformation"
+					onClick={() => updateFormStepsStatus("prev")}
+				/>
 				<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
 			</div>
 		</form>
 	);
 };
 
-export default StepDocuments;
+export default Documents;

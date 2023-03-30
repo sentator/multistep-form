@@ -1,13 +1,8 @@
 import React from "react";
 
 import { DeliveryFormState, StepperBarItem, UpdateFormValuesFunction } from "../types";
-import StepAddress from "../components/DeliveryForm/stepAddress/StepAddress";
-import StepDocuments from "../components/DeliveryForm/stepDocuments/StepDocuments";
-import StepGeneralInformation from "../components/DeliveryForm/stepGeneralInformation/StepGeneralInformation";
-import SectionSuccess from "../components/DeliveryForm/sectionSuccess/SectionSuccess";
 
 const FORM_DEFAULT_STATE: DeliveryFormState = {
-	selectedStepIndex: 0,
 	steps: {
 		generalInformation: {
 			value: {
@@ -43,30 +38,35 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 	},
 };
 const FORM_DEFAULT_STEPS: StepperBarItem[] = [
-	{ label: "generalInformation", title: "Інформація про відправлення", status: "active" },
-	{ label: "address", title: "Адреса отримання", status: "hidden" },
+	{
+		label: "generalInformation",
+		title: "Інформація про відправлення",
+		status: "editing",
+		url: "/new-order/generalInformation",
+	},
+	{ label: "address", title: "Адреса отримання", status: "hidden", url: "/new-order/address" },
 ];
 
 interface DeliveryFormContext {
 	formState: DeliveryFormState;
 	formSteps: StepperBarItem[];
-	next: () => void;
-	prev: () => void;
-	moveToStep: (index: number) => void;
 	updateFormValues: UpdateFormValuesFunction;
-	renderStep: () => React.ReactNode;
-	isFormConfirmed: boolean;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
+	isStepDocumentsRequired: boolean;
+	addStepDocuments: () => void;
+	removeStepDocuments: () => void;
+	clearContextData: () => void;
 }
 
 export const deliveryFormContext = React.createContext<DeliveryFormContext>({
 	formState: FORM_DEFAULT_STATE,
 	formSteps: FORM_DEFAULT_STEPS,
-	next: () => {},
-	prev: () => {},
-	moveToStep: (index) => {},
 	updateFormValues: (step, newValues) => {},
-	renderStep: () => null,
-	isFormConfirmed: false,
+	updateFormStepsStatus: (action) => {},
+	isStepDocumentsRequired: false,
+	addStepDocuments: () => {},
+	removeStepDocuments: () => {},
+	clearContextData: () => {},
 });
 
 interface ContextProps {
@@ -77,103 +77,28 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 	const [formState, setFormState] = React.useState<DeliveryFormState>(FORM_DEFAULT_STATE);
 	const [isStepDocumentsRequired, setStepDocumentsRequired] = React.useState<boolean>(false);
 	const [formSteps, setFormSteps] = React.useState<StepperBarItem[]>(FORM_DEFAULT_STEPS);
-	const [isFormConfirmed, setFormConfirmed] = React.useState<boolean>(false);
-
-	const next = () => {
-		const currentStepIndex = formState.selectedStepIndex;
-		const nextStepIndex = currentStepIndex + 1;
-		setFormSteps((prevState) =>
-			prevState.map((step, index) => {
-				switch (index) {
-					case currentStepIndex:
-						return {
-							...step,
-							status: "completed",
-						};
-					case nextStepIndex:
-						return {
-							...step,
-							status: "active",
-						};
-					default:
-						return {
-							...step,
-						};
-				}
-			})
-		);
-		setFormState((prevState) => ({ ...prevState, selectedStepIndex: nextStepIndex }));
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const prev = () => {
-		const currentStepIndex = formState.selectedStepIndex;
-		const prevStepIndex = currentStepIndex - 1;
-		setFormSteps((prevState) =>
-			prevState.map((step, index) => {
-				switch (index) {
-					case currentStepIndex:
-						return {
-							...step,
-							status: "hidden",
-						};
-					case prevStepIndex:
-						return {
-							...step,
-							status: "active",
-						};
-					default:
-						return {
-							...step,
-						};
-				}
-			})
-		);
-		setFormState((prevState) => ({ ...prevState, selectedStepIndex: prevStepIndex }));
-		window.scrollTo({ top: 0, behavior: "smooth" });
-	};
-
-	const showSuccessPage = () => {
-		setFormConfirmed(true);
-	};
 
 	const addStepDocuments = () => {
 		const newStepsArray = [...formSteps];
 
 		if (!newStepsArray.find((step) => step.label === "documents")) {
-			newStepsArray.splice(1, 0, { label: "documents", title: "Документи", status: "hidden" });
+			newStepsArray.splice(1, 0, {
+				label: "documents",
+				title: "Документи",
+				status: "hidden",
+				url: "/new-order/documents",
+			});
 		}
 
-		setStepDocumentsRequired(true);
 		setFormSteps(newStepsArray);
+		setStepDocumentsRequired(true);
 	};
 
 	const removeStepDocuments = () => {
-		setFormSteps((prevState) => prevState.filter((step) => step.label !== "documents"));
+		const newStepsArray = formSteps.filter((step) => step.label !== "documents");
+
+		setFormSteps(newStepsArray);
 		setStepDocumentsRequired(false);
-	};
-
-	const moveToStep = (index: number) => {
-		setFormSteps((prevState) =>
-			prevState.map((step, i) => {
-				if (i === index) {
-					return {
-						...step,
-						status: "active",
-					};
-				}
-
-				if (i > index) {
-					return {
-						...step,
-						status: "hidden",
-					};
-				}
-
-				return { ...step };
-			})
-		);
-		setFormState((prevState) => ({ ...prevState, selectedStepIndex: index }));
 	};
 
 	const updateFormValues: UpdateFormValuesFunction = (step, newValues) => {
@@ -189,85 +114,81 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 		}));
 	};
 
-	const renderStep = (): React.ReactNode => {
-		if (isFormConfirmed) {
-			return <SectionSuccess />;
+	const updateFormStepsStatus = (action: "next" | "prev" | number) => {
+		const currentStepIndex = formSteps.findIndex((item) => item.status === "editing");
+		let newFormSteps = [...formSteps];
+
+		if (action === "next") {
+			const nextStepIndex = currentStepIndex + 1;
+			newFormSteps = formSteps.map((step, index) => {
+				switch (index) {
+					case currentStepIndex:
+						return {
+							...step,
+							status: "completed",
+						};
+					case nextStepIndex:
+						return {
+							...step,
+							status: "editing",
+						};
+					default:
+						return {
+							...step,
+						};
+				}
+			});
 		}
 
-		if (isStepDocumentsRequired) {
-			switch (formState.selectedStepIndex) {
-				case 0:
-					return (
-						<StepGeneralInformation
-							formValues={formState.steps.generalInformation.value}
-							updateFormValues={updateFormValues}
-							moveToNextStep={next}
-							addStepDocuments={addStepDocuments}
-							removeStepDocuments={removeStepDocuments}
-						/>
-					);
-				case 1:
-					return (
-						<StepDocuments
-							formValues={formState.steps.documents.value}
-							updateFormValues={updateFormValues}
-							moveToPrevStep={prev}
-							moveToNextStep={next}
-						/>
-					);
-				case 2:
-					return (
-						<StepAddress
-							formValues={formState.steps.address.value}
-							updateFormValues={updateFormValues}
-							moveToPrevStep={prev}
-							moveToNextStep={showSuccessPage}
-						/>
-					);
-				default:
-					return (
-						<StepGeneralInformation
-							formValues={formState.steps.generalInformation.value}
-							updateFormValues={updateFormValues}
-							moveToNextStep={next}
-							addStepDocuments={addStepDocuments}
-							removeStepDocuments={removeStepDocuments}
-						/>
-					);
-			}
+		if (action === "prev") {
+			const prevStepIndex = currentStepIndex - 1;
+			newFormSteps = formSteps.map((step, index) => {
+				switch (index) {
+					case currentStepIndex:
+						return {
+							...step,
+							status: "hidden",
+						};
+					case prevStepIndex:
+						return {
+							...step,
+							status: "editing",
+						};
+					default:
+						return {
+							...step,
+						};
+				}
+			});
 		}
 
-		switch (formState.selectedStepIndex) {
-			case 0:
-				return (
-					<StepGeneralInformation
-						formValues={formState.steps.generalInformation.value}
-						updateFormValues={updateFormValues}
-						moveToNextStep={next}
-						addStepDocuments={addStepDocuments}
-						removeStepDocuments={removeStepDocuments}
-					/>
-				);
-			case 1:
-				return (
-					<StepAddress
-						formValues={formState.steps.address.value}
-						updateFormValues={updateFormValues}
-						moveToPrevStep={prev}
-						moveToNextStep={showSuccessPage}
-					/>
-				);
-			default:
-				return (
-					<StepGeneralInformation
-						formValues={formState.steps.generalInformation.value}
-						updateFormValues={updateFormValues}
-						moveToNextStep={next}
-						addStepDocuments={addStepDocuments}
-						removeStepDocuments={removeStepDocuments}
-					/>
-				);
+		if (typeof action === "number") {
+			newFormSteps = formSteps.map((step, i) => {
+				if (i === action) {
+					return {
+						...step,
+						status: "editing",
+					};
+				}
+
+				if (i > action) {
+					return {
+						...step,
+						status: "hidden",
+					};
+				}
+
+				return { ...step };
+			});
 		}
+
+		setFormSteps(newFormSteps);
+	};
+
+	const clearContextData = () => {
+		setFormState(FORM_DEFAULT_STATE);
+		setFormSteps(FORM_DEFAULT_STEPS);
+		setStepDocumentsRequired(false);
 	};
 
 	return (
@@ -275,12 +196,12 @@ const Context: React.FC<ContextProps> = ({ children }) => {
 			value={{
 				formState,
 				formSteps,
-				next,
-				prev,
-				moveToStep,
 				updateFormValues,
-				renderStep,
-				isFormConfirmed,
+				updateFormStepsStatus,
+				isStepDocumentsRequired,
+				addStepDocuments,
+				removeStepDocuments,
+				clearContextData,
 			}}
 		>
 			{children}

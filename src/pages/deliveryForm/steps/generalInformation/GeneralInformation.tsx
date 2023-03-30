@@ -1,29 +1,30 @@
 import React from "react";
-import { ControlledAutocomplete } from "../../controlledAutocomplete/ControlledAutocomplete";
+import { ControlledAutocomplete } from "../../../../components/controlledAutocomplete/ControlledAutocomplete";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
 
-import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../utils";
-import { StepGeneralInformationValues, UpdateFormValuesFunction } from "../../../types";
-import { ControlledInput } from "../../controlledInput/ControlledInput";
-import OrderComposition from "../orderComposition/OrderComposition";
-import CardsInformation from "../../cardsInformation/CardsInformation";
-import SectionTracking from "../../sectionTracking/SectionTracking";
-import Button from "../../button/Button";
+import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../../utils";
+import { StepGeneralInformationValues, UpdateFormValuesFunction } from "../../../../types";
+import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import OrderComposition from "../../../../components/orderComposition/OrderComposition";
+import CardsInformation from "../../../../components/cardsInformation/CardsInformation";
+import SectionTracking from "../../../../components/sectionTracking/SectionTracking";
+import Button from "../../../../components/button/Button";
 
-import "./stepGeneralInformation.scss";
+import "./generalInformation.scss";
 
-interface StepGeneralInformationProps {
+interface GeneralInformationProps {
 	formValues: StepGeneralInformationValues;
 	updateFormValues: UpdateFormValuesFunction;
-	moveToNextStep: () => void;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
 	addStepDocuments: () => void;
 	removeStepDocuments: () => void;
 }
 
-const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
+const GeneralInformation: React.FC<GeneralInformationProps> = ({
 	formValues,
 	updateFormValues,
-	moveToNextStep,
+	updateFormStepsStatus,
 	addStepDocuments,
 	removeStepDocuments,
 }) => {
@@ -31,6 +32,7 @@ const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
 		defaultValues: formValues,
 		mode: "onSubmit",
 	});
+	const navigate = useNavigate();
 
 	const country = watch("country");
 	const orderComposition = watch("orderComposition");
@@ -47,15 +49,16 @@ const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
 		!!customsFees ? addStepDocuments() : removeStepDocuments();
 	}, [customsFees]);
 
+	const submitStep = (data: StepGeneralInformationValues) => {
+		updateFormValues("generalInformation", data);
+		updateFormStepsStatus("next");
+
+		const nextStepUrl = !!customsFees ? "/new-order/documents" : "/new-order/address";
+		navigate(nextStepUrl);
+	};
+
 	return (
-		<form
-			className="general-information-form"
-			onSubmit={handleSubmit((data) => {
-				// console.log("data ready to submit", data);
-				updateFormValues("generalInformation", data);
-				moveToNextStep();
-			})}
-		>
+		<form className="general-information-form" onSubmit={handleSubmit(submitStep)}>
 			<div className="general-information-form__row general-information-form__row--1">
 				<ControlledAutocomplete
 					options={COUNTRIES}
@@ -116,4 +119,4 @@ const StepGeneralInformation: React.FC<StepGeneralInformationProps> = ({
 		</form>
 	);
 };
-export default StepGeneralInformation;
+export default GeneralInformation;

@@ -1,0 +1,13 @@
+.delivery-form-wrapper {
+	&__title {
+		margin-bottom: 0.6em;
+	}
+	&__stepper-bar {
+		margin-bottom: 30px;
+		@media (max-width: 48em) {
+			margin-bottom: 20px;
+		}
+	}
+	&__body {
+	}
+}

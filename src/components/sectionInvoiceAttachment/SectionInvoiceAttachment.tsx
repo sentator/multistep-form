@@ -1,6 +1,7 @@
 import React from "react";
 import { FieldValues, Path, Control } from "react-hook-form/dist/types";
-import { ControlledInputFile } from "../../controlledInputFile/ControlledInputFile";
+
+import { ControlledInputFile } from "../controlledInputFile/ControlledInputFile";
 
 import "./sectionInvoiceAttachment.scss";
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { ArrayPath, Path, FieldValues, Control } from "react-hook-form";
 
-import { deliveryFormContext } from "../../../context";
-import { ControlledInput } from "../../controlledInput/ControlledInput";
-import { ControlledInputCounter } from "../../controlledInputCounter/ControlledInputCounter";
-import { ControlledInputPrice } from "../../controlledInputPrice/ControlledInputPrice";
+import { deliveryFormContext } from "../../context";
+import { ControlledInput } from "../controlledInput/ControlledInput";
+import { ControlledInputCounter } from "../controlledInputCounter/ControlledInputCounter";
+import { ControlledInputPrice } from "../controlledInputPrice/ControlledInputPrice";
 
 import "./orderCompositionItem.scss";
 

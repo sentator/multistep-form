@@ -1,3 +1,4 @@
 import DeliveryFormContextProvider, { deliveryFormContext } from "./deliveryForm";
+import MuiThemeProvider from "./MuiThemeProvider";
 
-export { DeliveryFormContextProvider, deliveryFormContext };
+export { DeliveryFormContextProvider, deliveryFormContext, MuiThemeProvider };

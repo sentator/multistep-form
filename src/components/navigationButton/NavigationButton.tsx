@@ -6,12 +6,21 @@ import "./navigationButton.scss";
 interface NavigationButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	title: string;
 	iconPosition?: "left" | "right";
+	isInsideLink?: boolean;
 }
 
-const NavigationButton: React.FC<NavigationButtonProps> = ({ title, iconPosition = "right", ...rest }) => {
-	const btnClassnames = classnames("navigation-btn", { "navigation-btn--icon-left": iconPosition === "left" });
+const NavigationButton: React.FC<NavigationButtonProps> = ({
+	title,
+	iconPosition = "right",
+	isInsideLink = false,
+	...rest
+}) => {
+	const btnClassnames = classnames("navigation-btn", {
+		"navigation-btn--icon-left": iconPosition === "left",
+		"navigation-btn--inside-link": isInsideLink,
+	});
 	return (
-		<button className={btnClassnames} {...rest}>
+		<button className={btnClassnames} aria-hidden={isInsideLink} tabIndex={isInsideLink ? -1 : 0} {...rest}>
 			<span className="navigation-btn__title">{title}</span>
 			<svg
 				className="navigation-btn__icon"
