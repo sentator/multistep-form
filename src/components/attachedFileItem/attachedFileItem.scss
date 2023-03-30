@@ -1,0 +1,65 @@
+.attached-file {
+	position: relative;
+	display: block;
+	width: 100px;
+	height: 100px;
+	border: 1px solid #d3c8c8;
+
+	/* .attached-file__preview */
+	&__preview {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+	}
+	/* .attached-file__icon */
+	&__icon {
+		display: inline-block;
+		width: 20px;
+		height: 20px;
+	}
+	/* .attached-file__img */
+	&__img {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		object-position: center;
+		object-fit: cover;
+	}
+	/* .attached-file__btn-remove */
+	&__btn-remove {
+		position: absolute;
+		top: -12px;
+		right: -12px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 24px;
+		height: 24px;
+		border-radius: 50%;
+		border: none;
+		background-color: var(--mainWhiteColor);
+		color: var(--mainDarkColor);
+		cursor: pointer;
+		transition: color 0.3s ease-in-out;
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--mainRedColor);
+			}
+		}
+		&:focus-visible {
+			outline: 2px solid var(--mainFocusColor);
+		}
+		svg {
+			display: block;
+			width: 100%;
+			height: 100%;
+			pointer-events: none;
+			color: inherit;
+		}
+	}
+}

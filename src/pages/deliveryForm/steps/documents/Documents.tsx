@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 
@@ -17,24 +18,46 @@ interface DocumentsProps {
 }
 
 const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues, updateFormStepsStatus }) => {
-	const { handleSubmit, control } = useForm<StepDocumentsValues>({
+	const { handleSubmit, control, setValue } = useForm<StepDocumentsValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
 	});
 	const navigate = useNavigate();
 
+	const [attachedFiles, setAttachedFiles] = React.useState(formValues.invoice);
+
+	const replaceAttachedFiles = (value: File[] | null) => {
+		setAttachedFiles(value);
+		setValue("invoice", value, { shouldValidate: true });
+	};
+
+	const removeAttachedFile = (index: number) => {
+		if (attachedFiles) {
+			const filteredFiles = attachedFiles.filter((_, i) => i !== index);
+
+			setAttachedFiles(filteredFiles);
+			setValue("invoice", filteredFiles, { shouldValidate: true });
+		}
+	};
+
 	return (
 		<form
 			className="documents-form"
 			onSubmit={handleSubmit((data) => {
-				// console.log("data ready to submit", data);
 				updateFormValues("documents", data);
 				updateFormStepsStatus("next");
 				navigate("/new-order/address");
 			})}
 		>
 			<div className="documents-form__invoice">
-				<SectionInvoiceAttachment control={control} name="invoice" id="input_invoice" />
+				<SectionInvoiceAttachment
+					control={control}
+					name="invoice"
+					id="input_invoice"
+					attachedFiles={attachedFiles}
+					replaceAttachedFiles={replaceAttachedFiles}
+					removeAttachedFile={removeAttachedFile}
+				/>
 			</div>
 			<div className="documents-form__row documents-form__row--2-columns">
 				<div className="documents-form__column">

@@ -1,5 +1,6 @@
 import React from "react";
 import { FieldValues, Path, Control } from "react-hook-form/dist/types";
+import AttachedFilesList from "../attachedFilesList/AttachedFilesList";
 
 import { ControlledInputFile } from "../controlledInputFile/ControlledInputFile";
 
@@ -9,10 +10,13 @@ interface SectionInvoiceAttachmentProps<Field extends FieldValues> {
 	name: Path<Field>;
 	id: string;
 	control: Control<Field>;
+	attachedFiles: File[] | null;
+	replaceAttachedFiles: (value: File[] | null) => void;
+	removeAttachedFile: (index: number) => void;
 }
 
 const SectionInvoiceAttachment = <Field extends FieldValues>(props: SectionInvoiceAttachmentProps<Field>) => {
-	const { name, id, control } = props;
+	const { name, id, control, attachedFiles, replaceAttachedFiles, removeAttachedFile } = props;
 	const acceptedFormats = ["image/jpeg", "image/png", "application/pdf"];
 
 	return (
@@ -42,7 +46,11 @@ const SectionInvoiceAttachment = <Field extends FieldValues>(props: SectionInvoi
 						// 		// 	"Формат файлу не підтримується. Спробуйте jpeg, jpg, png, pdf",
 						// 	},
 					}}
+					replaceAttachedFiles={replaceAttachedFiles}
 				/>
+			</div>
+			<div className="section-invoice-attachment__files">
+				{!!attachedFiles && <AttachedFilesList files={attachedFiles} removeFile={removeAttachedFile} />}
 			</div>
 		</div>
 	);
