@@ -7,21 +7,33 @@ import { DeliveryForm, GeneralInformation, Documents, Address } from "./pages/de
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
-	const { formState, formSteps, updateFormValues, addStepDocuments, removeStepDocuments } =
-		React.useContext(deliveryFormContext);
+	const {
+		formState,
+		formSteps,
+		updateFormValues,
+		updateFormStepsStatus,
+		isStepDocumentsRequired,
+		addStepDocuments,
+		removeStepDocuments,
+		clearContextData,
+	} = React.useContext(deliveryFormContext);
 	return (
 		<div className="app">
 			<div className="container">
 				<ScrollToTop />
 				<Routes>
 					<Route path="/" element={<Homepage />} />
-					<Route path="/new-order" element={<DeliveryForm formSteps={formSteps} />}>
+					<Route
+						path="/new-order"
+						element={<DeliveryForm formSteps={formSteps} updateFormStepsStatus={updateFormStepsStatus} />}
+					>
 						<Route
 							path="generalInformation"
 							element={
 								<GeneralInformation
 									formValues={formState.steps.generalInformation.value}
 									updateFormValues={updateFormValues}
+									updateFormStepsStatus={updateFormStepsStatus}
 									addStepDocuments={addStepDocuments}
 									removeStepDocuments={removeStepDocuments}
 								/>
@@ -33,6 +45,7 @@ function App() {
 								<Documents
 									formValues={formState.steps.documents.value}
 									updateFormValues={updateFormValues}
+									updateFormStepsStatus={updateFormStepsStatus}
 								/>
 							}
 						/>
@@ -42,6 +55,14 @@ function App() {
 								<Address
 									formValues={formState.steps.address.value}
 									updateFormValues={updateFormValues}
+									updateFormStepsStatus={updateFormStepsStatus}
+									prevStepUrl={
+										isStepDocumentsRequired
+											? "/new-order/documents"
+											: "/new-order/generalInformation"
+									}
+									nextStepUrl={"/success"}
+									onSuccessSubmission={clearContextData}
 								/>
 							}
 						/>

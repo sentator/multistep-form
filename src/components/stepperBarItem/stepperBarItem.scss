@@ -2,7 +2,7 @@
 	display: flex;
 	align-items: center;
 	gap: 4px;
-	&.active {
+	&.editing {
 		.stepper-bar-item__icon {
 			background-color: var(--mainRedColor);
 		}

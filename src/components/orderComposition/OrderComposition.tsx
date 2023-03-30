@@ -1,5 +1,5 @@
 import { FieldValues, Control, useFieldArray, ArrayPath } from "react-hook-form";
-import { ProductItem } from "../../../types";
+
 import OrderCompositionItem from "../orderCompositionItem/OrderCompositionItem";
 
 import "./orderComposition.scss";

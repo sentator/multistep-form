@@ -13,9 +13,20 @@ import "./address.scss";
 interface AddressProps {
 	formValues: StepAddressValues;
 	updateFormValues: UpdateFormValuesFunction;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
+	prevStepUrl: string;
+	nextStepUrl: string;
+	onSuccessSubmission: () => void;
 }
 
-const Address: React.FC<AddressProps> = ({ formValues, updateFormValues }) => {
+const Address: React.FC<AddressProps> = ({
+	formValues,
+	updateFormValues,
+	updateFormStepsStatus,
+	prevStepUrl,
+	nextStepUrl,
+	onSuccessSubmission,
+}) => {
 	const { handleSubmit, control } = useForm<StepAddressValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
@@ -26,9 +37,9 @@ const Address: React.FC<AddressProps> = ({ formValues, updateFormValues }) => {
 		<form
 			className="address-form"
 			onSubmit={handleSubmit((data) => {
-				// console.log("data ready to submit", data);
 				updateFormValues("address", data);
-				navigate("/success");
+				onSuccessSubmission();
+				navigate(nextStepUrl);
 			})}
 		>
 			<div className="address-form__row">
@@ -61,7 +72,7 @@ const Address: React.FC<AddressProps> = ({ formValues, updateFormValues }) => {
 				</div>
 			</div>
 			<div className="address-form__row address-form__row--controls">
-				<NavigationLink title="Назад" to="/new-order/documents" />
+				<NavigationLink title="Назад" to={prevStepUrl} onClick={() => updateFormStepsStatus("prev")} />
 				<Button title="Зберегти відправлення" type="submit" />
 			</div>
 		</form>

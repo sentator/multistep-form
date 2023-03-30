@@ -6,16 +6,17 @@ import { ControlledDatePicker } from "../../../../components/controlledDatePicke
 import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
 import NavigationButton from "../../../../components/navigationButton/NavigationButton";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
-import SectionInvoiceAttachment from "../../../../components/DeliveryForm/sectionInvoiceAttachment/SectionInvoiceAttachment";
+import SectionInvoiceAttachment from "../../../../components/sectionInvoiceAttachment/SectionInvoiceAttachment";
 
 import "./documents.scss";
 
 interface DocumentsProps {
 	formValues: StepDocumentsValues;
 	updateFormValues: UpdateFormValuesFunction;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
 }
 
-const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues }) => {
+const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues, updateFormStepsStatus }) => {
 	const { handleSubmit, control } = useForm<StepDocumentsValues>({
 		defaultValues: formValues,
 		mode: "onSubmit",
@@ -28,6 +29,7 @@ const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues }) =
 			onSubmit={handleSubmit((data) => {
 				// console.log("data ready to submit", data);
 				updateFormValues("documents", data);
+				updateFormStepsStatus("next");
 				navigate("/new-order/address");
 			})}
 		>
@@ -176,7 +178,11 @@ const Documents: React.FC<DocumentsProps> = ({ formValues, updateFormValues }) =
 				/>
 			</div>
 			<div className="documents-form__row documents-form__row--controls">
-				<NavigationLink title="Назад" to="/new-order/generalInformation" />
+				<NavigationLink
+					title="Назад"
+					to="/new-order/generalInformation"
+					onClick={() => updateFormStepsStatus("prev")}
+				/>
 				<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
 			</div>
 		</form>

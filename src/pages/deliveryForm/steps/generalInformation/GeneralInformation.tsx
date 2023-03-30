@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../../utils";
 import { StepGeneralInformationValues, UpdateFormValuesFunction } from "../../../../types";
 import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
-import OrderComposition from "../../../../components/DeliveryForm/orderComposition/OrderComposition";
+import OrderComposition from "../../../../components/orderComposition/OrderComposition";
 import CardsInformation from "../../../../components/cardsInformation/CardsInformation";
 import SectionTracking from "../../../../components/sectionTracking/SectionTracking";
 import Button from "../../../../components/button/Button";
@@ -16,6 +16,7 @@ import "./generalInformation.scss";
 interface GeneralInformationProps {
 	formValues: StepGeneralInformationValues;
 	updateFormValues: UpdateFormValuesFunction;
+	updateFormStepsStatus: (action: "next" | "prev" | number) => void;
 	addStepDocuments: () => void;
 	removeStepDocuments: () => void;
 }
@@ -23,6 +24,7 @@ interface GeneralInformationProps {
 const GeneralInformation: React.FC<GeneralInformationProps> = ({
 	formValues,
 	updateFormValues,
+	updateFormStepsStatus,
 	addStepDocuments,
 	removeStepDocuments,
 }) => {
@@ -47,15 +49,16 @@ const GeneralInformation: React.FC<GeneralInformationProps> = ({
 		!!customsFees ? addStepDocuments() : removeStepDocuments();
 	}, [customsFees]);
 
+	const submitStep = (data: StepGeneralInformationValues) => {
+		updateFormValues("generalInformation", data);
+		updateFormStepsStatus("next");
+
+		const nextStepUrl = !!customsFees ? "/new-order/documents" : "/new-order/address";
+		navigate(nextStepUrl);
+	};
+
 	return (
-		<form
-			className="general-information-form"
-			onSubmit={handleSubmit((data) => {
-				// console.log("data ready to submit", data);
-				updateFormValues("generalInformation", data);
-				navigate("/new-order/documents");
-			})}
-		>
+		<form className="general-information-form" onSubmit={handleSubmit(submitStep)}>
 			<div className="general-information-form__row general-information-form__row--1">
 				<ControlledAutocomplete
 					options={COUNTRIES}
