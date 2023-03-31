@@ -14,12 +14,12 @@ interface ControlledInputPriceProps<Field extends FieldValues> {
 	rules?: Omit<RegisterOptions<Field, Path<Field>>, "setValueAs" | "disabled" | "valueAsNumber" | "valueAsDate">;
 	tooltip?: string;
 	currencySymbol?: string;
-	initialValue?: string;
+	initialValue?: number;
 }
 
 export const ControlledInputPrice = <Field extends FieldValues>(props: ControlledInputPriceProps<Field>) => {
-	const { control, name, id, label, rules, tooltip, currencySymbol, initialValue } = props;
-	const [localValue, setLocalValue] = React.useState(initialValue);
+	const { control, name, id, label, rules, tooltip, currencySymbol, initialValue = 0 } = props;
+	const [localValue, setLocalValue] = React.useState<string | undefined>(initialValue.toFixed(2));
 
 	return (
 		<Controller
@@ -51,10 +51,12 @@ export const ControlledInputPrice = <Field extends FieldValues>(props: Controlle
 								suffix={currencySymbol && ` ${currencySymbol}`}
 								maxLength={8}
 								step={1}
-								value={localValue}
-								onValueChange={(value) => setLocalValue(value)}
-								onBlur={() => onChange(localValue)}
 								data-error={!!error}
+								value={localValue}
+								onValueChange={(value) => {
+									setLocalValue(value);
+									onChange(value ? Number(value) : 0);
+								}}
 							/>
 						</div>
 						{error ? <p className="controlled-price-field__error">{error.message}</p> : null}

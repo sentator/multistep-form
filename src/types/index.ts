@@ -15,7 +15,7 @@ interface OptionItem {
 interface ProductItem {
 	productName: string;
 	quantity: number;
-	totalPrice: string;
+	totalPrice: number;
 }
 
 interface CurrencyRate {

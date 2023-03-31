@@ -25,7 +25,7 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 		},
 	} = React.useContext(deliveryFormContext);
 
-	const initialPriceValue = orderComposition[index] ? orderComposition[index].totalPrice : "0.00";
+	const initialPriceValue = orderComposition[index] ? orderComposition[index].totalPrice : 0;
 
 	return (
 		<div className="fields-product">
@@ -62,8 +62,9 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 						rules={{
 							validate: {
 								required: (value) => {
-									if (value === "0.00")
+									if (value === 0 || value === "0.00") {
 										return "Для подальшої реєстрації відправлення, вкажіть вартість товару за одиницю.";
+									}
 								},
 							},
 						}}

@@ -17,7 +17,7 @@ const OrderComposition = <Field extends FieldValues>(props: OrderCompositionProp
 	const itemsInOrder = fields.length;
 
 	const addNewItemFields = () => {
-		append({ productName: "", quantity: 1, totalPrice: "0.00" });
+		append({ productName: "", quantity: 1, totalPrice: 0 });
 	};
 
 	return (
