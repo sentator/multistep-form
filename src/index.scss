@@ -17,6 +17,13 @@ button {
 	font-family: inherit;
 }
 
+a {
+	text-decoration: none;
+	&:focus-visible {
+		outline-color: var(--mainFocusColor);
+	}
+}
+
 .visually-hidden {
 	position: absolute;
 	width: 1px;

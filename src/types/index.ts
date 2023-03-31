@@ -3,7 +3,6 @@ import {
 	StepDocumentsValues,
 	StepAddressValues,
 	DeliveryFormState,
-	UpdateFormValuesFunction,
 	StepperBarItem,
 } from "./deliveryForm";
 interface OptionItem {
@@ -33,6 +32,5 @@ export type {
 	StepDocumentsValues,
 	StepAddressValues,
 	DeliveryFormState,
-	UpdateFormValuesFunction,
 	StepperBarItem,
 };

@@ -1,4 +1,12 @@
 .address-form {
+	&__stepper {
+		margin-bottom: 40px;
+		@media (max-width: 48rem) {
+			margin-bottom: 20px;
+		}
+	}
+	&__form {
+	}
 	&__row {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);

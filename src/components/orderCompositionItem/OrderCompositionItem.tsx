@@ -21,11 +21,7 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 	const { index, name, control, isClearBtnVisible, removeItem, currencySymbol } = props;
 	const {
 		formState: {
-			steps: {
-				generalInformation: {
-					value: { orderComposition },
-				},
-			},
+			generalInformation: { orderComposition },
 		},
 	} = React.useContext(deliveryFormContext);
 

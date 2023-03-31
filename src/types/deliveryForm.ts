@@ -26,26 +26,14 @@ export interface StepAddressValues {
 	phoneNumber: string;
 }
 
-interface DeliveryFormStep<T> {
-	value: T;
-}
-
 export interface DeliveryFormState {
-	steps: {
-		generalInformation: DeliveryFormStep<StepGeneralInformationValues>;
-		documents: DeliveryFormStep<StepDocumentsValues>;
-		address: DeliveryFormStep<StepAddressValues>;
-	};
+	generalInformation: StepGeneralInformationValues;
+	documents: StepDocumentsValues;
+	address: StepAddressValues;
 }
-
-export type UpdateFormValuesFunction = (
-	step: keyof DeliveryFormState["steps"],
-	newValues: DeliveryFormState["steps"][typeof step]["value"]
-) => void;
 
 export interface StepperBarItem {
-	label: string;
 	title: string;
 	status: "editing" | "completed" | "hidden";
-	url: string;
+	url?: string;
 }

@@ -1,4 +1,12 @@
 .general-information-form {
+	&__stepper {
+		margin-bottom: 40px;
+		@media (max-width: 48em) {
+			margin-bottom: 20px;
+		}
+	}
+	&__form {
+	}
 	&__row {
 		display: grid;
 	}
