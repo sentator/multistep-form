@@ -1,0 +1,36 @@
+.attached-files {
+	/* .attached-files__list */
+	&__list {
+		list-style: none;
+		display: flex;
+		gap: 12px;
+		flex-wrap: wrap;
+	}
+	/* .attached-files__item */
+	&__item {
+	}
+}
+.files-transition {
+	&-enter,
+	&-appear {
+		transform: scale(0);
+		opacity: 0;
+		transition: all 0.3s ease-in-out;
+	}
+	&-enter-active,
+	&-appear-active {
+		transform: scale(1);
+		opacity: 1;
+		transition: all 0.3s ease-in-out;
+	}
+	&-exit {
+		transform: scale(1);
+		opacity: 1;
+		transition: all 0.3s ease-in-out;
+	}
+	&-exit-active {
+		transform: scale(0);
+		opacity: 0;
+		transition: all 0.3s ease-in-out;
+	}
+}
