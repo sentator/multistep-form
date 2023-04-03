@@ -1,4 +1,4 @@
-import { useField, useFormikContext } from "formik";
+import { useField } from "formik";
 
 import Tooltip from "../tooltip/Tooltip";
 
@@ -13,8 +13,7 @@ interface InputCounterProps {
 
 const InputCounter: React.FC<InputCounterProps> = (props) => {
 	const { name, id, label, tooltip } = props;
-	const [field, meta] = useField(props);
-	const { setFieldValue } = useFormikContext();
+	const [field, meta, { setValue }] = useField(name);
 
 	const validateValue = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value.replace(/\D/gi, "");
@@ -24,12 +23,14 @@ const InputCounter: React.FC<InputCounterProps> = (props) => {
 			modifiedValue = Number(value);
 		}
 
-		setFieldValue(name, modifiedValue);
+		setValue(modifiedValue);
 	};
 
-	const updateValue = (type: "asc" | "desc", value: number) => {
-		type === "asc" && setFieldValue(name, value + 1);
-		type === "desc" && setFieldValue(name, value - 1);
+	const increaseValue = () => {
+		setValue(field.value + 1);
+	};
+	const decreaseValue = () => {
+		setValue(field.value - 1);
 	};
 
 	return (
@@ -59,13 +60,13 @@ const InputCounter: React.FC<InputCounterProps> = (props) => {
 							className="input-counter__btn input-counter__btn--desc"
 							type="button"
 							disabled={field.value <= 1}
-							onClick={() => updateValue("desc", field.value)}
+							onClick={decreaseValue}
 						></button>
 						<button
 							className="input-counter__btn input-counter__btn--asc"
 							type="button"
 							disabled={field.value >= 100}
-							onClick={() => updateValue("asc", field.value)}
+							onClick={increaseValue}
 						></button>
 					</div>
 				</div>

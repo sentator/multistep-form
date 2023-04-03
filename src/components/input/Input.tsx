@@ -34,7 +34,7 @@ const Input = (props: InputProps) => {
 					className="controlled-input__input"
 					placeholder={placeholder}
 					id={id}
-					data-error={meta.touched && meta.error}
+					data-error={meta.touched && !!meta.error}
 				/>
 			</div>
 			{meta.touched && meta.error ? <p className="controlled-input__error">{meta.error}</p> : null}

@@ -1,5 +1,5 @@
 import React from "react";
-import { useField, useFormikContext } from "formik";
+import { useField } from "formik";
 import CurrencyInput from "react-currency-input-field";
 
 import Tooltip from "../tooltip/Tooltip";
@@ -17,8 +17,7 @@ interface InputPriceProps {
 
 const InputPrice: React.FC<InputPriceProps> = (props) => {
 	const { name, id, label, tooltip, currencySymbol, initialValue = 0 } = props;
-	const [field, meta] = useField(props);
-	const { setFieldValue } = useFormikContext();
+	const [field, meta, { setValue }] = useField(name);
 	const [localValue, setLocalValue] = React.useState<string | undefined>(initialValue.toFixed(2));
 
 	return (
@@ -49,7 +48,7 @@ const InputPrice: React.FC<InputPriceProps> = (props) => {
 					value={localValue}
 					onValueChange={(value) => {
 						setLocalValue(value);
-						setFieldValue(name, value ? Number(value) : 0);
+						setValue(value ? Number(value) : 0);
 					}}
 				/>
 			</div>

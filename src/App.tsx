@@ -1,13 +1,7 @@
 import { Routes, Route } from "react-router";
 
 import { Homepage, SuccessPage } from "./pages";
-import {
-	DeliveryForm,
-	// GeneralInformation,
-	Documents,
-	Address,
-} from "./pages/deliveryForm";
-import GeneralInformation from "./pages/deliveryForm/steps/generalInformation2/GeneralInformation";
+import { DeliveryForm, GeneralInformation, Documents, Address } from "./pages/deliveryForm";
 import ScrollToTop from "./components/ScrollToTop";
 
 function App() {

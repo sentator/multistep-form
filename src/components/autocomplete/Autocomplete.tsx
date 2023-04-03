@@ -1,6 +1,6 @@
 import TextField from "@mui/material/TextField";
 import MuiAutocomplete from "@mui/material/Autocomplete";
-import { useField, useFormikContext } from "formik";
+import { useField } from "formik";
 
 import { OptionItem } from "../../types";
 import Tooltip from "../tooltip/Tooltip";
@@ -18,8 +18,7 @@ interface AutocompleteProps<Option extends OptionItem> {
 
 export const Autocomplete = <Option extends OptionItem>(props: AutocompleteProps<Option>) => {
 	const { options, name, id, label, tooltip } = props;
-	const [field, meta] = useField(props);
-	const { setFieldValue } = useFormikContext();
+	const [field, meta, { setValue }] = useField(name);
 
 	return (
 		<div className="controlled-autocomplete">
@@ -39,7 +38,7 @@ export const Autocomplete = <Option extends OptionItem>(props: AutocompleteProps
 					getOptionLabel={(option) => option.name}
 					value={field.value}
 					onChange={(_, value) => {
-						setFieldValue(name, value || null);
+						setValue(value || null);
 					}}
 					onBlur={field.onBlur}
 					renderInput={(params) => (

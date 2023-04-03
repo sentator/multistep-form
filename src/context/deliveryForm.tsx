@@ -8,7 +8,7 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 		shop: null,
 		parcelName: "",
 		orderComposition: [{ productName: "", quantity: 1, totalPrice: 0 }],
-		customsFees: [{ value: false }],
+		customsFees: [{ value: true }],
 		promocode: "",
 		trackNumber: "",
 	},
