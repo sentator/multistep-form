@@ -4,12 +4,12 @@ import { useNavigate } from "react-router";
 
 import { StepAddressValues, StepperBarItem } from "../../../../types";
 import { deliveryFormContext } from "../../../../context";
+import StepperBar from "../../../../components/stepperBar/StepperBar";
 import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
 import Button from "../../../../components/button/Button";
 
 import "./address.scss";
-import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 const Address: React.FC = () => {
 	const {
