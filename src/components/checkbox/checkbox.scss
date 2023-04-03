@@ -1,0 +1,68 @@
+.controlled-checkbox {
+	/* .controlled-checkbox__body */
+	&__body {
+		&:not(:last-child) {
+			margin-bottom: 12px;
+		}
+	}
+	/* .controlled-checkbox__input */
+	&__input {
+		&:focus-visible + .controlled-checkbox__label::before {
+			outline: 2px solid var(--mainFocusColor);
+		}
+		&:focus-visible[data-error="true"] + .controlled-checkbox__label::before {
+			outline: 2px solid var(--mainRedColor);
+		}
+		&[data-checked="true"] + .controlled-checkbox__label svg {
+			opacity: 1;
+			visibility: visible;
+			transform: scale(1);
+		}
+		&[data-error="true"] + .controlled-checkbox__label::before {
+			border: 1px solid var(--mainRedColor);
+		}
+		&[data-error="true"] + .controlled-checkbox__label svg {
+			color: var(--mainRedColor);
+		}
+	}
+	/* .controlled-checkbox__label */
+	&__label {
+		position: relative;
+		display: block;
+		padding-left: 35px;
+		font-size: 1rem;
+		line-height: 150%;
+		color: var(--mainDarkColor);
+		cursor: pointer;
+		&::before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			content: "";
+			width: 24px;
+			height: 24px;
+			border: 1px solid var(--gullGrayColor);
+			border-radius: 6px;
+		}
+		svg {
+			position: absolute;
+			top: 8px;
+			left: 7px;
+			opacity: 0;
+			visibility: hidden;
+			transform: scale(0);
+			color: var(--gullGrayColor);
+			pointer-events: none;
+			transition: transform 0.3s ease-in-out, color 0.3s ease-in-out, opacity 0.3s ease-in-out,
+				visibility 0.3s ease-in-out;
+		}
+	}
+	/* .controlled-checkbox__label-text */
+	&__label-text {
+	}
+	/* .controlled-checkbox__error */
+	&__error {
+		font-size: 0.82rem;
+		color: var(--mainRedColor);
+	}
+}

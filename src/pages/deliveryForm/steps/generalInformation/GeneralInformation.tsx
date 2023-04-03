@@ -11,9 +11,9 @@ import OrderComposition from "../../../../components/orderComposition/OrderCompo
 import CardsInformation from "../../../../components/cardsInformation/CardsInformation";
 import SectionTracking from "../../../../components/sectionTracking/SectionTracking";
 import Button from "../../../../components/button/Button";
+import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 import "./generalInformation.scss";
-import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 const GeneralInformation: React.FC = () => {
 	const {
@@ -67,7 +67,7 @@ const GeneralInformation: React.FC = () => {
 			<div className="general-information-form__stepper">
 				<StepperBar steps={steps} />
 			</div>
-			<form className="general-information-form__form" onSubmit={handleSubmit(submitStep)}>
+			{/* <form className="general-information-form__form" onSubmit={handleSubmit(submitStep)}>
 				<div className="general-information-form__row general-information-form__row--1">
 					<ControlledAutocomplete
 						options={COUNTRIES}
@@ -125,7 +125,7 @@ const GeneralInformation: React.FC = () => {
 				<div className="general-information-form__row general-information-form__row--6">
 					<Button title="Зберегти відправлення" type="submit" />
 				</div>
-			</form>
+			</form> */}
 		</div>
 	);
 };

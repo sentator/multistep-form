@@ -17,6 +17,7 @@
 		"@types/react-dom": "^18.0.11",
 		"clsx": "^1.2.1",
 		"date-fns": "^2.29.3",
+		"formik": "^2.2.9",
 		"react": "^18.2.0",
 		"react-currency-input-field": "^3.6.10",
 		"react-datepicker": "^4.10.0",
