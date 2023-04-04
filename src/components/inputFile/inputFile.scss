@@ -1,0 +1,40 @@
+.controlled-input-file {
+	/* .controlled-input-file__input-wrapper */
+	&__input-wrapper {
+		&:not(:last-child) {
+			margin-bottom: 13px;
+		}
+	}
+	/* .controlled-input-file__input */
+	&__input {
+		&:focus-visible + .controlled-input-file__label {
+			outline: 2px solid var(--mainFocusColor);
+		}
+		&[data-error="true"]:focus-visible + .controlled-input-file__label {
+			outline-color: var(--mainRedColor);
+		}
+	}
+	/* .controlled-input-file__label */
+	&__label {
+		display: flex;
+		justify-content: center;
+		gap: 10px;
+		align-items: center;
+		min-height: 44px;
+		width: 100%;
+		border: 1px solid #d3c8c8;
+		padding: 5px 10px;
+		span {
+			font-weight: 700;
+			font-size: 0.82rem;
+			line-height: 130%;
+			text-transform: uppercase;
+			color: var(--mainDarkColor);
+		}
+	}
+	/* .controlled-input-file__error */
+	&__error {
+		color: var(--mainRedColor);
+		font-size: 13px;
+	}
+}

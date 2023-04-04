@@ -13,7 +13,7 @@ interface InputProps {
 
 const Input = (props: InputProps) => {
 	const { name, id, placeholder = "", label, tooltip } = props;
-	const [field, meta] = useField(props);
+	const [field, meta] = useField(name);
 
 	return (
 		<div className="controlled-input">
