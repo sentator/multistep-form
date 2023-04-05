@@ -1,4 +1,5 @@
 import { FieldArray } from "formik";
+import { v4 as uuidv4 } from "uuid";
 
 import { ProductItem } from "../../types";
 import OrderCompositionItem from "../orderCompositionItem/OrderCompositionItem";
@@ -25,7 +26,7 @@ const OrderComposition: React.FC<OrderCompositionProps> = (props) => {
 						<div className="order-composition__body">
 							<ul className="order-composition__list">
 								{fields.map((field, index) => (
-									<li className="order-composition__item" key={index}>
+									<li className="order-composition__item" key={field.id}>
 										<OrderCompositionItem
 											index={index}
 											name={name}
@@ -40,7 +41,7 @@ const OrderComposition: React.FC<OrderCompositionProps> = (props) => {
 						<footer className="order-composition__footer">
 							<button
 								className="order-composition__btn-add"
-								onClick={() => push({ productName: "", quantity: 1, totalPrice: 0 })}
+								onClick={() => push({ id: uuidv4(), productName: "", quantity: 1, totalPrice: 0 })}
 								type="button"
 							>
 								<span></span>

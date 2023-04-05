@@ -13,6 +13,7 @@ interface OptionItem {
 }
 
 interface ProductItem {
+	id: string;
 	productName: string;
 	quantity: number;
 	totalPrice: number;
