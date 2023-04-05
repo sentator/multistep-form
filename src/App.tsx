@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
 
 import { Homepage, SuccessPage } from "./pages";
-import { DeliveryForm, GeneralInformation, Documents, Address } from "./pages/deliveryForm";
+import { DeliveryForm, Documents, Address } from "./pages/deliveryForm";
 import GeneralInformationWrapper from "./pages/deliveryForm/GeneralInformationWrapper";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -13,7 +13,6 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Homepage />} />
 					<Route path="/new-order" element={<DeliveryForm />}>
-						{/* <Route path="generalInformation" element={<GeneralInformation />} /> */}
 						<Route path="generalInformation" element={<GeneralInformationWrapper />} />
 						<Route path="documents" element={<Documents />} />
 						<Route path="address" element={<Address />} />

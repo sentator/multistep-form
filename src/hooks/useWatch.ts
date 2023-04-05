@@ -13,9 +13,9 @@ import { useFormikContext } from "formik";
 // };
 
 // variant 2
-const useWatch = <T extends { [key: string]: any }>(fieldName: keyof T): T[typeof fieldName] => {
+const useWatch = <T extends { [key: string]: any }, U>(fieldName: keyof T): U => {
 	const { values }: { values: T } = useFormikContext<T>();
-	const [state, setState] = React.useState(values[fieldName]);
+	const [state, setState] = React.useState<U>(values[fieldName]);
 
 	React.useEffect(() => {
 		setState(values[fieldName]);

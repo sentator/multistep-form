@@ -1,12 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { OptionItem, StepGeneralInformationValues, StepperBarItem } from "../../types";
-import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../utils";
+import { StepGeneralInformationValues } from "../../types";
 import { deliveryFormContext } from "../../context";
-import GeneralInformation from "./steps/generalInformation2/GeneralInformation";
+import GeneralInformation from "./steps/generalInformation/GeneralInformation";
 
 const GeneralInformationWrapper: React.FC = () => {
 	const {
@@ -46,21 +45,6 @@ const GeneralInformationWrapper: React.FC = () => {
 		trackNumber: Yup.string().optional().min(6, "Значення занадто коротке. Повинно бути 6 символів або більше."),
 	});
 
-	// ------------------
-	// const [country, setCountry] = React.useState<OptionItem | null>(generalInformation.country);
-	// const [totalPrice, setTotalPrice] = React.useState<number>(calcTotalPrice(generalInformation.orderComposition));
-	// const optionsShops = country ? SHOPS[country.id] : SHOPS["default"];
-	// const currency = country ? CURRENCY[country.id] : undefined;
-	// const currencySymbol = currency?.symbol;
-	// const currencyValue = currency?.value;
-	// const customsFees = calcCustomsFees(currencyValue, totalPrice);
-	// const formattedTotalPrice = getFormattedPrice(totalPrice, currencySymbol);
-	// const formattedCustomsFees = getFormattedPrice(customsFees, currencySymbol);
-
-	// React.useLayoutEffect(() => {
-	// 	!!customsFees ? addStepDocuments() : removeStepDocuments();
-	// }, [customsFees]);
-
 	const submitStep = (data: StepGeneralInformationValues) => {
 		updateGeneralInformation(data);
 
@@ -76,14 +60,16 @@ const GeneralInformationWrapper: React.FC = () => {
 				onSubmit={submitStep}
 				enableReinitialize
 			>
-				{({ values, handleSubmit, setFieldValue }) => (
-					<GeneralInformation
-						values={values}
-						handleSubmit={handleSubmit}
-						resetShop={() => setFieldValue("shop", null)}
-						addStepDocuments={addStepDocuments}
-						removeStepDocuments={removeStepDocuments}
-					/>
+				{({ values, setFieldValue }) => (
+					<Form>
+						<GeneralInformation
+							orderCompositionValue={values.orderComposition}
+							customsFeesValue={values.customsFees}
+							resetShopValue={() => setFieldValue("shop", null)}
+							addStepDocuments={addStepDocuments}
+							removeStepDocuments={removeStepDocuments}
+						/>
+					</Form>
 				)}
 			</Formik>
 		</div>
