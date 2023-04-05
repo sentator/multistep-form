@@ -2,7 +2,7 @@ import React from "react";
 import { Controller, Control, Path, FieldValues, RegisterOptions } from "react-hook-form";
 import CurrencyInput from "react-currency-input-field";
 
-import Tooltip from "../tooltip/Tooltip";
+import Tooltip from "../../tooltip/Tooltip";
 
 import "./controlledInputPrice.scss";
 

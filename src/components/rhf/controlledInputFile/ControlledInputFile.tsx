@@ -1,6 +1,6 @@
 import { Controller, Control, Path, FieldValues, RegisterOptions } from "react-hook-form";
 
-import { transformFileList } from "../../utils";
+import { transformFileList } from "../../../utils";
 
 import "./controlledInputFile.scss";
 
