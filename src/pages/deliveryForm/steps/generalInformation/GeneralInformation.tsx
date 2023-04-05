@@ -1,6 +1,6 @@
 import React from "react";
 
-import { OptionItem, ProductItem, StepGeneralInformationValues, StepperBarItem } from "../../../../types";
+import { StepGeneralInformationValues, StepperBarItem } from "../../../../types";
 import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../../utils";
 import { useWatch } from "../../../../hooks";
 import { Autocomplete } from "../../../../components/autocomplete/Autocomplete";
@@ -28,8 +28,8 @@ const GeneralInformation: React.FC<GeneralInformationProps> = ({
 	addStepDocuments,
 	removeStepDocuments,
 }) => {
-	const country = useWatch<StepGeneralInformationValues, OptionItem | null>("country");
-	const orderComposition = useWatch<StepGeneralInformationValues, ProductItem[]>("orderComposition");
+	const country = useWatch<StepGeneralInformationValues, "country">("country");
+	const orderComposition = useWatch<StepGeneralInformationValues, "orderComposition">("orderComposition");
 	const firstRender = React.useRef<boolean>(true);
 
 	const optionsShops = country ? SHOPS[country.id] : SHOPS["default"];
