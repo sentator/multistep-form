@@ -55,9 +55,11 @@ const AttachInvoice: React.FC<AttachInvoiceProps> = ({ name, id, initialValue, a
 					replaceAttachedFiles={replaceAttachedFiles}
 				/>
 			</div>
-			<div className="section-invoice-attachment__files">
-				{!!attachedFiles && <AttachedFilesList files={attachedFiles} removeFile={removeAttachedFile} />}
-			</div>
+			{!!attachedFiles && (
+				<div className="section-invoice-attachment__files">
+					<AttachedFilesList files={attachedFiles} removeFile={removeAttachedFile} />
+				</div>
+			)}
 		</div>
 	);
 };
