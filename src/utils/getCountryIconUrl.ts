@@ -3,5 +3,5 @@ import { COUNTRIES } from "./database";
 export const getCountryIconUrl = (label: string): string | null => {
 	const selectedCountry = COUNTRIES.find((item) => item.label === label);
 
-	return selectedCountry ? selectedCountry.label : null;
+	return selectedCountry && selectedCountry.icon ? selectedCountry.icon : null;
 };

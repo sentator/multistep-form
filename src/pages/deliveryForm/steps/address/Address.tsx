@@ -18,25 +18,25 @@ const Address: React.FC = () => {
 	const {
 		formState: { address },
 		updateAddress,
-		clearContextData,
 		isDocumentsRequired,
 	} = React.useContext(deliveryFormContext);
 
 	const navigate = useNavigate();
 
 	const prevStep = isDocumentsRequired ? "/new-order/documents" : "/new-order/generalInformation";
-	const nextStep = "/success";
+	const nextStep = "/new-order/confirm-data";
 
 	const submitStep = (data: StepAddressValues) => {
 		updateAddress(data);
-		clearContextData();
 		navigate(nextStep);
 	};
 
 	const validationSchema = Yup.object().shape({
 		deliveryAddress: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ .,0-9][а-щьюяґєії' .,0-9]*$/gi, {
+				message: "Доступні лише літери з українського алфавіту",
+			}),
 		phoneNumber: Yup.string()
 			.required("Значення не повинно бути пустим.")
 			.max(16, "Цей номер телефону не дійсний")

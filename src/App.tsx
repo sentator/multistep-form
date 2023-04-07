@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router";
 
 import { Homepage, SuccessPage } from "./pages";
-import { DeliveryForm, Documents, Address } from "./pages/deliveryForm";
+import { DeliveryForm, Documents, Address, ConfirmData } from "./pages/deliveryForm";
 import GeneralInformationWrapper from "./pages/deliveryForm/GeneralInformationWrapper";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -16,6 +16,7 @@ function App() {
 						<Route path="generalInformation" element={<GeneralInformationWrapper />} />
 						<Route path="documents" element={<Documents />} />
 						<Route path="address" element={<Address />} />
+						<Route path="confirm-data" element={<ConfirmData />} />
 					</Route>
 					<Route path="/success" element={<SuccessPage />} />
 				</Routes>
