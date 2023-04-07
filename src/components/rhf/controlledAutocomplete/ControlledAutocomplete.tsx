@@ -2,8 +2,8 @@ import { Controller, Control, Path, FieldValues } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 
-import { OptionItem } from "../../types";
-import Tooltip from "../tooltip/Tooltip";
+import { OptionItem } from "../../../types";
+import Tooltip from "../../tooltip/Tooltip";
 
 import "./controlledAutocomplete.scss";
 

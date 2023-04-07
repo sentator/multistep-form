@@ -1,17 +1,18 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { Formik, Form } from "formik";
 import { useNavigate } from "react-router";
+import * as Yup from "yup";
 
 import { StepDocumentsValues, StepperBarItem } from "../../../../types";
 import { deliveryFormContext } from "../../../../context";
-import { ControlledDatePicker } from "../../../../components/controlledDatePicker/ControlledDatePicker";
-import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import AttachInvoice from "../../../../components/attachInvoice/AttachInvoice";
+import Input from "../../../../components/input/Input";
+import DatePicker from "../../../../components/datePicker/DatePicker";
 import NavigationButton from "../../../../components/navigationButton/NavigationButton";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
-import SectionInvoiceAttachment from "../../../../components/sectionInvoiceAttachment/SectionInvoiceAttachment";
+import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 import "./documents.scss";
-import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 const Documents: React.FC = () => {
 	const {
@@ -19,27 +20,41 @@ const Documents: React.FC = () => {
 		updateDocuments,
 	} = React.useContext(deliveryFormContext);
 
-	const { handleSubmit, control, setValue } = useForm<StepDocumentsValues>({
-		defaultValues: documents,
-		mode: "onSubmit",
-	});
 	const navigate = useNavigate();
 
-	const [attachedFiles, setAttachedFiles] = React.useState(documents.invoice);
-
-	const replaceAttachedFiles = (value: File[] | null) => {
-		setAttachedFiles(value);
-		setValue("invoice", value, { shouldValidate: true });
+	const submitStep = (data: StepDocumentsValues) => {
+		updateDocuments(data);
+		navigate("/new-order/address");
 	};
 
-	const removeAttachedFile = (index: number) => {
-		if (attachedFiles) {
-			const filteredFiles = attachedFiles.filter((_, i) => i !== index);
-
-			setAttachedFiles(filteredFiles);
-			setValue("invoice", filteredFiles, { shouldValidate: true });
-		}
-	};
+	const validationSchema = Yup.object().shape({
+		invoice: Yup.mixed().required("Файл рахунку-фактури є обов'язковим."),
+		lastName: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		firstName: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		patronymicName: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		passport: Yup.string()
+			.required("Значення недопустиме.")
+			.matches(/[А-ЩЬЮЯҐЄІЇ]{2}\d{6}/gi, { message: "Серія та номер повинні відповідати формату АБ123456" })
+			.max(8, "Серія та номер повинні відповідати формату АБ123456"),
+		birthDate: Yup.string().required("Значення не повинно бути пустим."),
+		passportIssueDate: Yup.string().required("Значення не повинно бути пустим."),
+		passportIssuedBy: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		registrationAddress: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		identificationNumber: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/\d{10}/gi, { message: "Ідентифікаційний номер повинен містити 10 цифр" })
+			.max(10, "Ідентифікаційний номер повинен містити 10 цифр"),
+	});
 
 	const steps: StepperBarItem[] = [
 		{ title: "Інформація про відправлення", status: "completed", url: "/new-order/generalInformation" },
@@ -53,169 +68,71 @@ const Documents: React.FC = () => {
 				<StepperBar steps={steps} />
 			</div>
 			<div className="documents-form__form">
-				<form
-					className="documents-form"
-					onSubmit={handleSubmit((data) => {
-						updateDocuments(data);
-						navigate("/new-order/address");
-					})}
-				>
-					<div className="documents-form__invoice">
-						<SectionInvoiceAttachment
-							control={control}
-							name="invoice"
-							id="input_invoice"
-							attachedFiles={attachedFiles}
-							replaceAttachedFiles={replaceAttachedFiles}
-							removeAttachedFile={removeAttachedFile}
-						/>
-					</div>
-					<div className="documents-form__row documents-form__row--2-columns">
-						<div className="documents-form__column">
-							<ControlledInput
-								control={control}
-								name="lastName"
-								id="input_lastName"
-								label="Прізвище (українською)"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-									pattern: {
-										value: /^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi,
-										message: "Доступні лише літери з українського алфавіту",
-									},
-								}}
+				<Formik initialValues={documents} validationSchema={validationSchema} onSubmit={submitStep}>
+					<Form className="documents-form">
+						<div className="documents-form__invoice">
+							<AttachInvoice
+								name="invoice"
+								id="input_invoice"
+								initialValue={documents.invoice}
+								acceptedFormats={["image/jpeg", "image/png", "application/pdf"]}
 							/>
 						</div>
-						<div className="documents-form__column">
-							<ControlledInput
-								control={control}
-								name="firstName"
-								id="input_firstName"
-								label="Ім'я (українською)"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-									pattern: {
-										value: /^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi,
-										message: "Доступні лише літери з українського алфавіту",
-									},
-								}}
+						<div className="documents-form__row documents-form__row--2-columns">
+							<div className="documents-form__column">
+								<Input name="lastName" id="input_lastName" label="Прізвище (українською)" />
+							</div>
+							<div className="documents-form__column">
+								<Input name="firstName" id="input_firstName" label="Ім'я (українською)" />
+							</div>
+						</div>
+						<div className="documents-form__row documents-form__row--2-columns">
+							<div className="documents-form__column">
+								<Input
+									name="patronymicName"
+									id="input_patronymic-name"
+									label="По батькові (українською)"
+								/>
+							</div>
+							<div className="documents-form__column">
+								<Input name="passport" id="input_passport" label="Серія та номер паспорта" />
+							</div>
+						</div>
+						<div className="documents-form__row documents-form__row--2-columns">
+							<div className="documents-form__column">
+								<DatePicker name="birthDate" id="input_birth-date" label="Дата народження" />
+							</div>
+							<div className="documents-form__column">
+								<DatePicker
+									name="passportIssueDate"
+									id="input_passport-issue-date"
+									label="Дата видачі паспорта"
+								/>
+							</div>
+						</div>
+						<div className="documents-form__row">
+							<Input name="passportIssuedBy" id="input_passport-issued-by" label="Ким виданий" />
+						</div>
+						<div className="documents-form__row">
+							<Input
+								name="registrationAddress"
+								id="input_registration-address"
+								label="Адреса реєстрації"
 							/>
 						</div>
-					</div>
-					<div className="documents-form__row documents-form__row--2-columns">
-						<div className="documents-form__column">
-							<ControlledInput
-								control={control}
-								name="patronymicName"
-								id="input_patronymic-name"
-								label="По батькові (українською)"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-									pattern: {
-										value: /^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi,
-										message: "Доступні лише літери з українського алфавіту",
-									},
-								}}
+						<div className="documents-form__row">
+							<Input
+								name="identificationNumber"
+								id="input_identification-number"
+								label="Ідентифікаційний номер"
 							/>
 						</div>
-						<div className="documents-form__column">
-							<ControlledInput
-								control={control}
-								name="passport"
-								id="input_passport"
-								label="Серія та номер паспорта"
-								rules={{
-									required: "Значення недопустиме.",
-									pattern: {
-										value: /[А-ЩЬЮЯҐЄІЇ]{2}\d{6}/gi,
-										message: "Серія та номер повинні відповідати формату АБ123456",
-									},
-									maxLength: {
-										value: 8,
-										message: "Серія та номер повинні відповідати формату АБ123456",
-									},
-								}}
-							/>
+						<div className="documents-form__row documents-form__row--controls">
+							<NavigationLink title="Назад" to="/new-order/generalInformation" />
+							<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
 						</div>
-					</div>
-					<div className="documents-form__row documents-form__row--2-columns">
-						<div className="documents-form__column">
-							<ControlledDatePicker
-								control={control}
-								name="birthDate"
-								id="input_birth-date"
-								label="Дата народження"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-								}}
-							/>
-						</div>
-						<div className="documents-form__column">
-							<ControlledDatePicker
-								control={control}
-								name="passportIssueDate"
-								id="input_passport-issue-date"
-								label="Дата видачі паспорта"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-								}}
-							/>
-						</div>
-					</div>
-					<div className="documents-form__row">
-						<ControlledInput
-							control={control}
-							name="passportIssuedBy"
-							id="input_passport-issued-by"
-							label="Ким виданий"
-							rules={{
-								required: "Значення не повинно бути пустим.",
-								pattern: {
-									value: /^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi,
-									message: "Доступні лише літери з українського алфавіту",
-								},
-							}}
-						/>
-					</div>
-					<div className="documents-form__row">
-						<ControlledInput
-							control={control}
-							name="registrationAddress"
-							id="input_registration-address"
-							label="Адреса реєстрації"
-							rules={{
-								required: "Значення не повинно бути пустим.",
-								pattern: {
-									value: /^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi,
-									message: "Доступні лише літери з українського алфавіту",
-								},
-							}}
-						/>
-					</div>
-					<div className="documents-form__row">
-						<ControlledInput
-							control={control}
-							name="identificationNumber"
-							id="input_identification-number"
-							label="Ідентифікаційний номер"
-							rules={{
-								required: "Значення не повинно бути пустим.",
-								pattern: {
-									value: /\d{10}/gi,
-									message: "Ідентифікаційний номер повинен містити 10 цифр",
-								},
-								maxLength: {
-									value: 10,
-									message: "Ідентифікаційний номер повинен містити 10 цифр",
-								},
-							}}
-						/>
-					</div>
-					<div className="documents-form__row documents-form__row--controls">
-						<NavigationLink title="Назад" to="/new-order/generalInformation" />
-						<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
-					</div>
-				</form>
+					</Form>
+				</Formik>
 			</div>
 		</div>
 	);

@@ -1,24 +1,22 @@
 import React from "react";
-import { ArrayPath, Path, FieldValues, Control } from "react-hook-form";
 
 import { deliveryFormContext } from "../../context";
-import { ControlledInput } from "../controlledInput/ControlledInput";
-import { ControlledInputCounter } from "../controlledInputCounter/ControlledInputCounter";
-import { ControlledInputPrice } from "../controlledInputPrice/ControlledInputPrice";
+import Input from "../input/Input";
+import InputCounter from "../inputCounter/InputCounter";
+import InputPrice from "../inputPrice/InputPrice";
 
 import "./orderCompositionItem.scss";
 
-interface OrderCompositionItemProps<Field extends FieldValues> {
+interface OrderCompositionItemProps {
 	index: number;
-	name: ArrayPath<Field>;
-	control: Control<Field>;
+	name: string;
 	isClearBtnVisible: boolean;
 	removeItem: () => void;
 	currencySymbol?: string;
 }
 
-const OrderCompositionItem = <Field extends FieldValues>(props: OrderCompositionItemProps<Field>) => {
-	const { index, name, control, isClearBtnVisible, removeItem, currencySymbol } = props;
+const OrderCompositionItem: React.FC<OrderCompositionItemProps> = (props) => {
+	const { index, name, isClearBtnVisible, removeItem, currencySymbol } = props;
 	const {
 		formState: {
 			generalInformation: { orderComposition },
@@ -30,52 +28,24 @@ const OrderCompositionItem = <Field extends FieldValues>(props: OrderComposition
 	return (
 		<div className="fields-product">
 			<div className="fields-product__name">
-				<ControlledInput
-					name={`${name}.${index}.productName` as Path<Field>}
-					rules={{
-						validate: {
-							required: (value) => {
-								if (!value) {
-									return "Значення не повинно бути пустим.";
-								}
-								if (value.match(/\W/gi)) return "Доступні лише символи з латиниці";
-							},
-						},
-					}}
-					control={control}
+				<Input
+					name={`${name}.${index}.productName`}
 					id={`${name}_${index}_productName`}
 					label="Назва товару (латиницею)"
 				/>
 			</div>
 			<div className="fields-product__quantity">
-				<ControlledInputCounter
-					name={`${name}.${index}.quantity` as Path<Field>}
-					control={control}
-					id={`${name}_${index}_quantity`}
-					label="Кількість"
-				/>
+				<InputCounter name={`${name}.${index}.quantity`} id={`${name}_${index}_quantity`} label="Кількість" />
 			</div>
 			<div className="fields-product__price">
-				{
-					<ControlledInputPrice
-						name={`${name}.${index}.totalPrice` as Path<Field>}
-						rules={{
-							validate: {
-								required: (value) => {
-									if (value === 0 || value === "0.00") {
-										return "Для подальшої реєстрації відправлення, вкажіть вартість товару за одиницю.";
-									}
-								},
-							},
-						}}
-						control={control}
-						id={`${name}_${index}_totalPrice`}
-						label="Вартість"
-						tooltip="Вартість вводьте з податками (tax), якщо вони є. Доставку до закордонного складу не враховуйте."
-						currencySymbol={currencySymbol}
-						initialValue={initialPriceValue}
-					/>
-				}
+				<InputPrice
+					name={`${name}.${index}.totalPrice`}
+					id={`${name}_${index}_totalPrice`}
+					label="Вартість"
+					tooltip="Вартість вводьте з податками (tax), якщо вони є. Доставку до закордонного складу не враховуйте."
+					currencySymbol={currencySymbol}
+					initialValue={initialPriceValue}
+				/>
 			</div>
 			{isClearBtnVisible && (
 				<button className="fields-product__btn-clear" type="button" onClick={removeItem}>

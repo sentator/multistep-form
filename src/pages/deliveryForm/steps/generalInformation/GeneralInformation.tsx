@@ -1,36 +1,37 @@
 import React from "react";
-import { ControlledAutocomplete } from "../../../../components/controlledAutocomplete/ControlledAutocomplete";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 
 import { StepGeneralInformationValues, StepperBarItem } from "../../../../types";
 import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../../utils";
-import { deliveryFormContext } from "../../../../context";
-import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import { useWatch } from "../../../../hooks";
+import { Autocomplete } from "../../../../components/autocomplete/Autocomplete";
+import Input from "../../../../components/input/Input";
 import OrderComposition from "../../../../components/orderComposition/OrderComposition";
 import CardsInformation from "../../../../components/cardsInformation/CardsInformation";
 import SectionTracking from "../../../../components/sectionTracking/SectionTracking";
 import Button from "../../../../components/button/Button";
-
-import "./generalInformation.scss";
 import StepperBar from "../../../../components/stepperBar/StepperBar";
 
-const GeneralInformation: React.FC = () => {
-	const {
-		formState: { generalInformation },
-		updateGeneralInformation,
-		addStepDocuments,
-		removeStepDocuments,
-	} = React.useContext(deliveryFormContext);
+import "./generalInformation.scss";
 
-	const { handleSubmit, control, watch } = useForm<StepGeneralInformationValues>({
-		defaultValues: generalInformation,
-		mode: "onSubmit",
-	});
-	const navigate = useNavigate();
+interface GeneralInformationProps {
+	orderCompositionValue: StepGeneralInformationValues["orderComposition"];
+	customsFeesValue: StepGeneralInformationValues["customsFees"];
+	resetShopValue: () => void;
+	addStepDocuments: () => void;
+	removeStepDocuments: () => void;
+}
 
-	const country = watch("country");
-	const orderComposition = watch("orderComposition");
+const GeneralInformation: React.FC<GeneralInformationProps> = ({
+	orderCompositionValue,
+	customsFeesValue,
+	resetShopValue,
+	addStepDocuments,
+	removeStepDocuments,
+}) => {
+	const country = useWatch<StepGeneralInformationValues, "country">("country");
+	const orderComposition = useWatch<StepGeneralInformationValues, "orderComposition">("orderComposition");
+	const firstRender = React.useRef<boolean>(true);
+
 	const optionsShops = country ? SHOPS[country.id] : SHOPS["default"];
 	const currency = country ? CURRENCY[country.id] : undefined;
 	const currencySymbol = currency?.symbol;
@@ -41,15 +42,15 @@ const GeneralInformation: React.FC = () => {
 	const formattedCustomsFees = getFormattedPrice(customsFees, currencySymbol);
 
 	React.useEffect(() => {
+		if (!firstRender.current) {
+			resetShopValue();
+		}
+		firstRender.current = false;
+	}, [country]);
+
+	React.useEffect(() => {
 		!!customsFees ? addStepDocuments() : removeStepDocuments();
 	}, [customsFees]);
-
-	const submitStep = (data: StepGeneralInformationValues) => {
-		updateGeneralInformation(data);
-
-		const nextStepUrl = !!customsFees ? "/new-order/documents" : "/new-order/address";
-		navigate(nextStepUrl);
-	};
 
 	const steps: StepperBarItem[] = !!customsFees
 		? [
@@ -63,28 +64,15 @@ const GeneralInformation: React.FC = () => {
 		  ];
 
 	return (
-		<div className="general-information-form">
+		<>
 			<div className="general-information-form__stepper">
 				<StepperBar steps={steps} />
 			</div>
-			<form className="general-information-form__form" onSubmit={handleSubmit(submitStep)}>
+			<div className="general-information-form__form">
 				<div className="general-information-form__row general-information-form__row--1">
-					<ControlledAutocomplete
-						options={COUNTRIES}
-						control={control}
-						name="country"
-						id="select-counties"
-						label="Країна"
-					/>
-					<ControlledAutocomplete
-						options={optionsShops}
-						control={control}
-						name="shop"
-						id="select-shop"
-						label="Назва інтернет-магазину"
-					/>
-					<ControlledInput
-						control={control}
+					<Autocomplete options={COUNTRIES} name="country" id="select-counties" label="Країна" />
+					<Autocomplete options={optionsShops} name="shop" id="select-shop" label="Назва інтернет-магазину" />
+					<Input
 						name="parcelName"
 						id="input_parcel-name"
 						label="Назва відправлення (необов'язково)"
@@ -95,7 +83,7 @@ const GeneralInformation: React.FC = () => {
 				<div className="general-information-form__row general-information-form__row--2">
 					<OrderComposition
 						name="orderComposition"
-						control={control}
+						fields={orderCompositionValue}
 						currencySymbol={currencySymbol}
 						formattedTotalPrice={formattedTotalPrice}
 					/>
@@ -103,15 +91,14 @@ const GeneralInformation: React.FC = () => {
 				<div className="general-information-form__row general-information-form__row--3">
 					<CardsInformation
 						name="customsFees"
-						control={control}
 						formattedCustomsFees={formattedCustomsFees || "0.00 " + (currencySymbol ? currencySymbol : "")}
+						fields={customsFeesValue}
 						isAgreementNeeded={!!customsFees}
 					/>
 				</div>
 				<div className="general-information-form__row general-information-form__row--4">
 					<div className="general-information-form__promocode">
-						<ControlledInput
-							control={control}
+						<Input
 							name="promocode"
 							id="input_promocode"
 							label="Промокод"
@@ -119,14 +106,16 @@ const GeneralInformation: React.FC = () => {
 						/>
 					</div>
 				</div>
+
 				<div className="general-information-form__row general-information-form__row--5">
-					<SectionTracking name="trackNumber" id="input_track-number" control={control} />
+					<SectionTracking name="trackNumber" id="input_track-number" />
 				</div>
+
 				<div className="general-information-form__row general-information-form__row--6">
 					<Button title="Зберегти відправлення" type="submit" />
 				</div>
-			</form>
-		</div>
+			</div>
+		</>
 	);
 };
 export default GeneralInformation;

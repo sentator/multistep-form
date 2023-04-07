@@ -2,7 +2,7 @@ import { Controller, Control, Path, FieldValues, RegisterOptions } from "react-h
 import DatePicker, { registerLocale } from "react-datepicker";
 import uk from "date-fns/locale/uk";
 
-import Tooltip from "../tooltip/Tooltip";
+import Tooltip from "../../tooltip/Tooltip";
 
 import "react-datepicker/dist/react-datepicker.css";
 import "./controlledDatePicker.scss";

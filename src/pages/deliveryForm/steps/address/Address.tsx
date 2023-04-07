@@ -1,11 +1,14 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import { isValidPhoneNumber } from "libphonenumber-js";
 
 import { StepAddressValues, StepperBarItem } from "../../../../types";
 import { deliveryFormContext } from "../../../../context";
 import StepperBar from "../../../../components/stepperBar/StepperBar";
-import { ControlledInput } from "../../../../components/controlledInput/ControlledInput";
+import Input from "../../../../components/input/Input";
+import InputPhone from "../../../../components/inputPhone/InputPhone";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
 import Button from "../../../../components/button/Button";
 
@@ -19,14 +22,26 @@ const Address: React.FC = () => {
 		isDocumentsRequired,
 	} = React.useContext(deliveryFormContext);
 
-	const { handleSubmit, control } = useForm<StepAddressValues>({
-		defaultValues: address,
-		mode: "onSubmit",
-	});
 	const navigate = useNavigate();
 
 	const prevStep = isDocumentsRequired ? "/new-order/documents" : "/new-order/generalInformation";
 	const nextStep = "/success";
+
+	const submitStep = (data: StepAddressValues) => {
+		updateAddress(data);
+		clearContextData();
+		navigate(nextStep);
+	};
+
+	const validationSchema = Yup.object().shape({
+		deliveryAddress: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+		phoneNumber: Yup.string()
+			.required("Значення не повинно бути пустим.")
+			.max(16, "Цей номер телефону не дійсний")
+			.test("isValid", "Цей номер телефону не дійсний", (value) => isValidPhoneNumber(value, "UA")),
+	});
 
 	const steps: StepperBarItem[] = isDocumentsRequired
 		? [
@@ -45,43 +60,27 @@ const Address: React.FC = () => {
 				<StepperBar steps={steps} />
 			</div>
 			<div className="address-form__form">
-				<form
-					className="address-form"
-					onSubmit={handleSubmit((data) => {
-						updateAddress(data);
-						clearContextData();
-						navigate(nextStep);
-					})}
-				>
-					<div className="address-form__row">
-						<div className="address-form__column">
-							<ControlledInput
-								control={control}
-								name="deliveryAddress"
-								id="input_delivery-address"
-								label="Адреса доставки"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-								}}
-							/>
+				<Formik initialValues={address} validationSchema={validationSchema} onSubmit={submitStep}>
+					<Form className="address-form">
+						<div className="address-form__row">
+							<div className="address-form__column">
+								<Input name="deliveryAddress" id="input_delivery-address" label="Адреса доставки" />
+							</div>
+							<div className="address-form__column">
+								<InputPhone
+									name="phoneNumber"
+									id="input_phone-number"
+									label="Контактний номер телефону"
+									placeholder="+380"
+								/>
+							</div>
 						</div>
-						<div className="address-form__column">
-							<ControlledInput
-								control={control}
-								name="phoneNumber"
-								id="input_phone-number"
-								label="Контактний номер телефону"
-								rules={{
-									required: "Значення не повинно бути пустим.",
-								}}
-							/>
+						<div className="address-form__row address-form__row--controls">
+							<NavigationLink title="Назад" to={prevStep} />
+							<Button title="Зберегти відправлення" type="submit" />
 						</div>
-					</div>
-					<div className="address-form__row address-form__row--controls">
-						<NavigationLink title="Назад" to={prevStep} />
-						<Button title="Зберегти відправлення" type="submit" />
-					</div>
-				</form>
+					</Form>
+				</Formik>
 			</div>
 		</div>
 	);

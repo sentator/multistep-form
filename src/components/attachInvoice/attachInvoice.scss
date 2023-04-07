@@ -1,5 +1,8 @@
 .section-invoice-attachment {
 	padding: 16px 0;
+	@media (max-width: 48em) {
+		padding: 0;
+	}
 	/* .section-invoice-attachment__title */
 	&__title {
 		font-weight: 400;

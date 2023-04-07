@@ -1,5 +1,5 @@
 import { Controller, Control, Path, FieldValues } from "react-hook-form";
-import Tooltip from "../tooltip/Tooltip";
+import Tooltip from "../../tooltip/Tooltip";
 
 import "./controlledInputCounter.scss";
 

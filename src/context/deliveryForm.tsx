@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 import { DeliveryFormState, StepAddressValues, StepDocumentsValues, StepGeneralInformationValues } from "../types";
 
@@ -7,8 +8,8 @@ const FORM_DEFAULT_STATE: DeliveryFormState = {
 		country: null,
 		shop: null,
 		parcelName: "",
-		orderComposition: [{ productName: "", quantity: 1, totalPrice: 0 }],
-		customsFees: [{ value: false }],
+		orderComposition: [{ id: uuidv4(), productName: "", quantity: 1, totalPrice: 0 }],
+		customsFees: [{ value: true }],
 		promocode: "",
 		trackNumber: "",
 	},

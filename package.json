@@ -17,6 +17,8 @@
 		"@types/react-dom": "^18.0.11",
 		"clsx": "^1.2.1",
 		"date-fns": "^2.29.3",
+		"formik": "^2.2.9",
+		"libphonenumber-js": "^1.10.26",
 		"react": "^18.2.0",
 		"react-currency-input-field": "^3.6.10",
 		"react-datepicker": "^4.10.0",
@@ -27,6 +29,7 @@
 		"react-scripts": "5.0.1",
 		"react-transition-group": "^4.4.5",
 		"typescript": "^4.9.5",
+		"uuid": "^9.0.0",
 		"web-vitals": "^2.1.4",
 		"yup": "^1.0.2"
 	},
@@ -58,6 +61,7 @@
 	},
 	"devDependencies": {
 		"@types/react-datepicker": "^4.10.0",
+		"@types/uuid": "^9.0.1",
 		"gh-pages": "^5.0.0",
 		"sass": "^1.59.3"
 	}

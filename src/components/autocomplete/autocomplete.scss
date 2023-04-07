@@ -1,75 +1,26 @@
-.autocomplete {
-	width: 100%;
-	&.opened {
-		.autocomplete__input svg {
-			transform: translateY(-50%) rotate(180deg);
-		}
-	}
-	&.filled {
-		.autocomplete__input input {
-			padding: 10px 38px 10px 44px;
-		}
-	}
+.controlled-autocomplete {
+	display: flex;
+	flex-direction: column;
 	&__label {
-		display: block;
+		flex: 0 0 27px;
+		display: flex;
 		font-weight: 400;
 		font-size: 0.875rem;
 		line-height: 170%;
-		margin-bottom: 0.28em;
+		margin-bottom: 4px;
 	}
-	&__input {
-		position: relative;
-		input {
-			display: block;
-			width: 100%;
-			height: 46px;
-			padding: 10px 38px 10px 10px;
-			border-radius: 12px;
-			border: 1px solid var(--gullGrayColor);
-			font-size: 16px;
-			cursor: pointer;
-		}
-		img {
-			position: absolute;
-			top: 50%;
-			left: 10px;
-			width: 24px;
-			pointer-events: none;
-			transform: translateY(-50%);
-		}
-		svg {
-			position: absolute;
-			right: 10px;
-			top: 50%;
-			transform: translateY(-50%) rotate(0);
-			transition: transform 0.3s ease-in-out;
-			pointer-events: none;
-		}
+	&__label-text {
+		align-self: flex-end;
 	}
-	&__list {
-		border-radius: 12px;
-		background-color: var(--mainWhiteColor);
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.12);
+	&__label-icon {
 	}
-	&__item {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		padding: 10px;
-		min-height: 46px;
-		font-size: 16px;
-		line-height: 140%;
-		color: #333;
-		cursor: pointer;
-		&.Mui-focused {
-			color: var(--mainDarkColor);
-			background-color: #f6f6f9;
-		}
-		img {
-			flex: 0 0 18px;
-		}
-		span {
-			flex: 1 1 auto;
-		}
+	&__autocomplete-wrapper {
+		margin-bottom: 13px;
+	}
+	&__autocomplete {
+	}
+	&__error {
+		color: var(--mainRedColor);
+		font-size: 13px;
 	}
 }

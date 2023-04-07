@@ -1,0 +1,111 @@
+.controlled-counter {
+	display: flex;
+	flex-direction: column;
+	&__label {
+		flex: 0 0 27px;
+		font-weight: 400;
+		font-size: 0.875rem;
+		line-height: 170%;
+		margin-bottom: 4px;
+	}
+	&__label-text {
+	}
+	&__label-icon {
+		display: inline-block;
+	}
+	&__input {
+		flex: 0 0 48px;
+		margin-bottom: 13px;
+	}
+}
+.input-counter {
+	position: relative;
+	height: 100%;
+	/* .input-counter__input */
+	&__input {
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		display: block;
+		padding: 5px 80px 5px 20px;
+		width: 100%;
+		height: 100%;
+		outline: none;
+		border: 1px solid var(--gullGrayColor);
+		border-radius: 12px;
+		color: var(--mainDarkColor);
+		font-size: 0.875rem;
+		&::placeholder {
+			font-size: 1rem;
+			color: var(--gullGrayColor);
+		}
+		&:focus {
+			outline: 2px solid #1976d2;
+			outline-offset: -2px;
+			border-color: transparent;
+		}
+	}
+	/* .input-counter__controls */
+	&__controls {
+		position: absolute;
+		top: 50%;
+		right: 8px;
+		width: 80px;
+		z-index: 2;
+		display: flex;
+		align-items: center;
+		transform: translateY(-50%);
+	}
+	/* .input-counter__btn */
+	&__btn {
+		position: relative;
+		flex: 0 0 40px;
+		height: 40px;
+		border: none;
+		background-color: transparent;
+		cursor: pointer;
+		color: var(--mainDarkColor);
+		transition: color 0.3s ease-in-out;
+		&::before {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			content: "";
+			width: 18px;
+			height: 2px;
+			color: inherit;
+			background-color: currentColor;
+		}
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--mainRedColor);
+			}
+		}
+		&:focus-visible {
+			outline: 2px solid #1976d2;
+		}
+		&:disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+		/* .input-counter__btn--desc */
+		&--desc {
+		}
+		/* .input-counter__btn--asc */
+		&--asc {
+			&::after {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				content: "";
+				width: 2px;
+				height: 18px;
+				color: inherit;
+				background-color: currentColor;
+			}
+		}
+	}
+}

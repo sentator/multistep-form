@@ -1,25 +1,25 @@
 import React from "react";
-import { FieldValues, Control, ArrayPath, Path, useFieldArray } from "react-hook-form";
+import { FieldArray } from "formik";
 
-import { ControlledCheckbox } from "../controlledCheckbox/ControlledCheckbox";
+import Checkbox from "../checkbox/Checkbox";
 import Tooltip from "../tooltip/Tooltip";
 
 import "./cardsInformation.scss";
 
-interface CardsInformationProps<Field extends FieldValues> {
-	name: ArrayPath<Field>;
-	control: Control<Field>;
+interface CardsInformationProps {
+	name: string;
+	fields: [{ value: boolean }];
 	formattedCustomsFees: string;
 	isAgreementNeeded: boolean;
 }
 
-const CardsInformation = <Field extends FieldValues>(props: CardsInformationProps<Field>) => {
-	const { name, control, formattedCustomsFees, isAgreementNeeded } = props;
-	const { fields, replace } = useFieldArray({ name, control } as never);
+const CardsInformation: React.FC<CardsInformationProps> = (props) => {
+	const { name, fields, formattedCustomsFees, isAgreementNeeded } = props;
+	// const { fields, replace } = useFieldArray({ name, control } as never);
 
-	React.useEffect(() => {
-		isAgreementNeeded ? replace([{ value: true }]) : replace([{ value: false }]);
-	}, [isAgreementNeeded, replace]);
+	// React.useEffect(() => {
+	// 	isAgreementNeeded ? replace([{ value: true }]) : replace([{ value: false }]);
+	// }, [isAgreementNeeded, replace]);
 
 	return (
 		<div className="cards-information">
@@ -27,22 +27,25 @@ const CardsInformation = <Field extends FieldValues>(props: CardsInformationProp
 				<div className="cards-information__item">
 					<div className="customs-fees">
 						{isAgreementNeeded && (
-							<div className="customs-fees__row">
-								{fields.map((field, index) => (
-									<div className="customs-fees__row-item" key={field.id}>
-										<ControlledCheckbox
-											name={`${name}.${index}.value` as Path<Field>}
-											control={control}
-											id="customs-fees-checkbox"
-											label="Я згоден з оплатою послуги розмитнення (митний збір, податки та митно-брокерські послуги)"
-											rules={{
-												required:
-													"Для подальшої реєстрації відправлення, необхідно погодитись з вищезазначеною умовою",
-											}}
-										/>
+							<FieldArray name={name}>
+								{({ replace }) => (
+									<div className="customs-fees__row">
+										{fields.map((field, index) => (
+											<div className="customs-fees__row-item" key={index}>
+												<Checkbox
+													name={`${name}.${index}.value`}
+													id="customs-fees-checkbox"
+													label="Я згоден з оплатою послуги розмитнення (митний збір, податки та митно-брокерські послуги)"
+													// rules={{
+													// 	required:
+													// 		"Для подальшої реєстрації відправлення, необхідно погодитись з вищезазначеною умовою",
+													// }}
+												/>
+											</div>
+										))}
 									</div>
-								))}
-							</div>
+								)}
+							</FieldArray>
 						)}
 						<div className="customs-fees__row">
 							<p className="customs-fees__title">Орієнтовна сума митних платежів</p>

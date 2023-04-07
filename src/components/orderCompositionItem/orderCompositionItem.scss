@@ -25,6 +25,9 @@
 		grid-column: span 1;
 		@media (max-width: 48em) {
 			grid-column: auto;
+			&:not(:last-child) {
+				margin-bottom: 20px;
+			}
 		}
 	}
 	/* .fields-product__btn-clear */
