@@ -1,0 +1,33 @@
+.order-item {
+	padding: 20px;
+	border-radius: 16px;
+	background-color: var(--mainGrayColor);
+	/* .order-item__icon */
+	&__icon {
+	}
+	/* .order-item__content */
+	&__content {
+	}
+	/* .order-item__title */
+	&__title {
+		font-size: 1rem;
+		line-height: 150%;
+		font-weight: 500;
+		color: var(--mainDarkColor);
+		margin-bottom: 1.5em;
+	}
+	/* .order-item__tracking-number */
+	&__tracking-number {
+		font-size: 1rem;
+		line-height: 130%;
+		color: var(--mainDarkColor);
+		margin-bottom: 0.25em;
+	}
+	/* .order-item__status */
+	&__status {
+		font-size: 1rem;
+		line-height: 150%;
+		font-weight: 500;
+		color: var(--mainDarkColor);
+	}
+}

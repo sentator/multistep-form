@@ -25,6 +25,37 @@ interface CurrencyRate {
 	gbp: { rate: number };
 }
 
+interface OrderResponseData {
+	_id: string;
+	data: {
+		generalInformation: {
+			country: OptionItem;
+			shop: OptionItem;
+			parcelName: string;
+			orderComposition: ProductItem[];
+			customsFees: [{ value: boolean }];
+			promocode: string;
+			trackNumber: string;
+		};
+		documents?: {
+			// invoice: File[];
+			lastName: string;
+			firstName: string;
+			patronymicName: string;
+			passport: string;
+			birthDate: Date;
+			passportIssueDate: Date;
+			passportIssuedBy: string;
+			registrationAddress: string;
+			identificationNumber: string;
+		};
+		address: {
+			deliveryAddress: string;
+			phoneNumber: string;
+		};
+	};
+}
+
 export type {
 	OptionItem,
 	ProductItem,
@@ -34,4 +65,5 @@ export type {
 	StepAddressValues,
 	DeliveryFormState,
 	StepperBarItem,
+	OrderResponseData,
 };

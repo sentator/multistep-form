@@ -1,0 +1,14 @@
+.orders-list {
+	/* .orders-list__list */
+	&__list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+		gap: 20px;
+		@media (max-width: 30em) {
+			grid-template-columns: auto;
+		}
+	}
+	/* .orders-list__item */
+	&__item {
+	}
+}
