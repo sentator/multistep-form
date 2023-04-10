@@ -56,6 +56,12 @@ interface OrderResponseData {
 	};
 }
 
+interface UploadedFile {
+	originalName: string;
+	fileName: string;
+	fileUrl: string;
+}
+
 export type {
 	OptionItem,
 	ProductItem,
@@ -66,4 +72,5 @@ export type {
 	DeliveryFormState,
 	StepperBarItem,
 	OrderResponseData,
+	UploadedFile,
 };

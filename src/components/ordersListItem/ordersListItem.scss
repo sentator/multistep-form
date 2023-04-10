@@ -7,7 +7,10 @@
 	background-color: var(--mainGrayColor);
 	/* .order-item__icon */
 	&__icon {
-		padding-top: 3px;
+		display: flex;
+		align-items: center;
+		width: 24px;
+		height: 24px;
 	}
 	/* .order-item__body */
 	&__body {

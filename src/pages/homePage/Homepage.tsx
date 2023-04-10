@@ -1,35 +1,11 @@
-import React from "react";
-import axios from "axios";
-
-import { OrderResponseData } from "../../types";
+import useDeliveryFormService from "../../services/deliveryForm";
 import NavigationLink from "../../components/navigationLink/NavigationLink";
 import OrdersList from "../../components/ordersList/OrdersList";
 
 import "./homepage.scss";
 
 const Homepage = () => {
-	const [orders, setOrders] = React.useState<OrderResponseData[] | null>(null);
-	const [isLoading, setLoading] = React.useState<boolean>(true);
-	const [isError, setError] = React.useState<boolean>(false);
-
-	React.useEffect(() => {
-		async function fetchOrders() {
-			try {
-				const response = await axios.get<OrderResponseData[]>(
-					"https://multistep-form-backend-production.up.railway.app/api/orders"
-				);
-
-				setOrders(response.data);
-				setLoading(false);
-			} catch (error) {
-				console.error(error);
-				setError(true);
-				setLoading(false);
-			}
-		}
-
-		fetchOrders();
-	}, []);
+	const { isFetching, error, orders } = useDeliveryFormService();
 
 	return (
 		<div className="homepage">
@@ -44,9 +20,9 @@ const Homepage = () => {
 				<div className="section-orders">
 					<h2 className="section-orders__title">Мої відправлення</h2>
 					<div className="section-orders__body">
-						{isLoading && <p>Завантажуємо список замовлень...</p>}
-						{isError && <p>Сталася помилка при завантаженні списку замовлень</p>}
-						{!isLoading && !isError && orders && orders.length && <OrdersList items={orders} />}
+						{isFetching && <p>Завантажуємо список замовлень...</p>}
+						{!!error && <p>{error}</p>}
+						{!isFetching && !error && orders && orders.length && <OrdersList items={orders} />}
 					</div>
 				</div>
 			</div>
