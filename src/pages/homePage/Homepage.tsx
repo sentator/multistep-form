@@ -10,11 +10,13 @@ const Homepage = () => {
 	return (
 		<div className="homepage">
 			<header className="homepage__header">
-				<NavigationLink
-					title="Зареєструвати відправлення"
-					to="/new-order/generalInformation"
-					iconPosition="right"
-				/>
+				<div className="homepage__create-new">
+					<NavigationLink
+						title="Зареєструвати відправлення"
+						to="/new-order/generalInformation"
+						iconPosition="right"
+					/>
+				</div>
 			</header>
 			<div className="homepage__body">
 				<div className="section-orders">

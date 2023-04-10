@@ -10,6 +10,11 @@
 	&__header {
 		margin-bottom: 20px;
 	}
+	&__create-new {
+		.navigation-link {
+			width: fit-content;
+		}
+	}
 	&__body {
 		background: var(--mainWhiteColor);
 		border-radius: 16px;
