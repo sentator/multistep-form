@@ -1,8 +1,7 @@
 import React from "react";
-import { Column } from "react-table";
 
-import { OrdersTableData, ProductItem } from "../../types";
-import { CURRENCY } from "../../utils";
+import { prepareOrdersTableData } from "../../utils";
+import { useOrdersTableColumns } from "../../hooks";
 import useDeliveryFormService from "../../services/deliveryForm";
 import NavigationLink from "../../components/navigationLink/NavigationLink";
 import OrdersTable from "../../components/ordersTable/OrdersTable";
@@ -11,112 +10,8 @@ import "./homepage.scss";
 
 const Homepage = () => {
 	const { isFetching, error, orders } = useDeliveryFormService();
-
-	const columns: Column<OrdersTableData>[] = React.useMemo(
-		() => [
-			{
-				id: "expander",
-				Header: ({ getToggleAllRowsExpandedProps, isAllRowsExpanded }: any) => (
-					<button {...getToggleAllRowsExpandedProps()} className="btn-expand" type="button">
-						{isAllRowsExpanded ? "▼" : "►"}
-					</button>
-				),
-				Cell: ({ row }: { row: any }) =>
-					row.canExpand ? (
-						<button {...row.getToggleRowExpandedProps()} className="btn-expand" type="button">
-							{row.isExpanded ? "▼" : "►"}
-						</button>
-					) : null,
-			},
-			{
-				Header: "Країна",
-				accessor: ({ country }) => {
-					return (
-						<span className="cell-country">
-							{country.icon ? (
-								<span className="cell-country__icon">
-									<img src={country.icon} alt={country.name} />
-								</span>
-							) : null}
-							<span className="cell-country__name">{country.name}</span>
-						</span>
-					);
-				},
-			},
-			{ Header: "Магазин", accessor: ({ shop }) => shop.name },
-			{ Header: "Назва посилки", accessor: "parcelName" },
-			{ Header: "Трек-номер", accessor: "trackNumber" },
-			{
-				Header: "Товари",
-				columns: [
-					{
-						Header: "Назва товару",
-						accessor: "productName",
-					},
-					{
-						Header: "Кількість, од.",
-						accessor: "quantity",
-					},
-					{
-						Header: (
-							<span>
-								Вартість, всього <br /> / за 1 од.
-							</span>
-						),
-						accessor: "totalPrice",
-					},
-				],
-			},
-		],
-		[]
-	);
-
-	const data: OrdersTableData[] = React.useMemo(
-		() =>
-			orders?.map(
-				({
-					data: {
-						generalInformation: { orderComposition, ...rest },
-					},
-				}) => {
-					const { symbol: currencySymbol } = CURRENCY[rest.country.label];
-					return {
-						...rest,
-						productName: orderComposition
-							.reduce((acc: string[], item: ProductItem) => {
-								acc = [...acc, item.productName];
-								return acc;
-							}, [])
-							.join(", "),
-						quantity: orderComposition.reduce((acc, item) => {
-							acc += item.quantity;
-							return acc;
-						}, 0),
-						totalPrice:
-							orderComposition
-								.reduce((acc, item) => {
-									acc += item.totalPrice * item.quantity;
-									return acc;
-								}, 0)
-								.toFixed(2) + ` ${currencySymbol}`,
-						subRows:
-							orderComposition.length > 1
-								? orderComposition.map((item) => ({
-										country: { name: "", icon: null },
-										shop: { name: "" },
-										parcelName: "",
-										promocode: "",
-										trackNumber: "",
-										subRows: null,
-										...item,
-										totalPrice: item.totalPrice.toFixed(2) + ` ${currencySymbol}`,
-								  }))
-								: null,
-					};
-				}
-			) || [],
-		[orders]
-	);
+	const columns = useOrdersTableColumns();
+	const data = React.useMemo(() => prepareOrdersTableData(orders), [orders]);
 
 	return (
 		<div className="wrapper">
