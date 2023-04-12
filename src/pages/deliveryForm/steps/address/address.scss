@@ -21,19 +21,22 @@
 	}
 	&__row--controls {
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
+		align-items: center;
 		gap: 20px;
+		padding-top: 40px;
 		@media (max-width: 48em) {
-			flex-direction: column;
-			.navigation-btn {
-				align-self: flex-start;
-			}
-			.button {
-				width: 100%;
-			}
+			flex-direction: column-reverse;
+			justify-content: center;
+			padding-top: 20px;
+			gap: 10px;
 		}
 	}
 	&__column {
+	}
+	&__navigation {
+		display: flex;
+		align-items: center;
+		gap: 20px;
 	}
 }

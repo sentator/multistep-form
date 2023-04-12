@@ -31,8 +31,16 @@
 	&__row--5 {
 	}
 	&__row--6 {
-		justify-items: center;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 20px;
 		padding-top: 40px;
+		@media (max-width: 48em) {
+			flex-direction: column-reverse;
+			justify-content: center;
+			gap: 10px;
+		}
 	}
 	&__promocode {
 		max-width: 220px;
@@ -40,5 +48,10 @@
 		box-shadow: 0 0 0 100vmax var(--mainGrayColor);
 		clip-path: inset(0 -100vmax);
 		background-color: var(--mainGrayColor);
+	}
+	&__navigation {
+		display: flex;
+		align-items: center;
+		gap: 20px;
 	}
 }

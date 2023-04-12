@@ -13,6 +13,7 @@ import NavigationLink from "../../../../components/navigationLink/NavigationLink
 import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 import "./documents.scss";
+import Button from "../../../../components/button/Button";
 
 const Documents: React.FC = () => {
 	const {
@@ -134,8 +135,11 @@ const Documents: React.FC = () => {
 							/>
 						</div>
 						<div className="documents-form__row documents-form__row--controls">
-							<NavigationLink title="Назад" to="/new-order/generalInformation" />
-							<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+							<div className="documents-form__navigation">
+								<NavigationLink title="Назад" to="/new-order/generalInformation" />
+								<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							</div>
 						</div>
 					</Form>
 				</Formik>

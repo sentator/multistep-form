@@ -10,6 +10,7 @@ import StepperBar from "../../../../components/stepperBar/StepperBar";
 import Input from "../../../../components/input/Input";
 import InputPhone from "../../../../components/inputPhone/InputPhone";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
+import NavigationButton from "../../../../components/navigationButton/NavigationButton";
 import Button from "../../../../components/button/Button";
 
 import "./address.scss";
@@ -76,8 +77,11 @@ const Address: React.FC = () => {
 							</div>
 						</div>
 						<div className="address-form__row address-form__row--controls">
-							<NavigationLink title="Назад" to={prevStep} />
-							<Button title="Зберегти відправлення" type="submit" />
+							<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+							<div className="address-form__navigation">
+								<NavigationLink title="Назад" to={prevStep} />
+								<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							</div>
 						</div>
 					</Form>
 				</Formik>

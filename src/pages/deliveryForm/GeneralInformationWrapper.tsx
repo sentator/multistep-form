@@ -25,7 +25,7 @@ const GeneralInformationWrapper: React.FC = () => {
 				Yup.object().shape({
 					productName: Yup.string()
 						.required("Значення не повинно бути пустим.")
-						.matches(/\W/gi, { message: "Доступні лише символи з латиниці" }),
+						.matches(/\w/gi, { message: "Доступні лише символи з латиниці" }),
 					totalPrice: Yup.number().moreThan(
 						0,
 						"Для подальшої реєстрації відправлення, вкажіть вартість товару за одиницю."

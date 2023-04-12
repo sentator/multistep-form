@@ -59,8 +59,11 @@ const ConfirmData = () => {
 				)}
 			</div>
 			<div className="page-confirmation__footer">
-				<NavigationLink to="/new-order/address" title="Редагувати форму" />
-				<Button title="Відправити" onClick={sendOrderData} disabled={isSending || !!error} />
+				<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+				<div className="page-confirmation__navigation">
+					<NavigationLink to="/new-order/address" title="Редагувати форму" />
+					<Button title="Відправити" onClick={sendOrderData} disabled={isSending || !!error} />
+				</div>
 			</div>
 		</div>
 	);

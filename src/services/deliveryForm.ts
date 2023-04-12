@@ -1,7 +1,8 @@
 import React from "react";
-import axios, { isAxiosError } from "axios";
+import { isAxiosError } from "axios";
 
 import { OrderResponseData, UploadedFile } from "../types";
+import { apiClient } from "../apiClient";
 import { deliveryFormContext } from "../context";
 
 const useDeliveryFormService = (onSuccess?: () => void) => {
@@ -29,15 +30,11 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 
 			try {
 				setSending(true);
-				const response = await axios.post<UploadedFile[]>(
-					"https://multistep-form-backend-production.up.railway.app/api/files",
-					formData,
-					{
-						headers: {
-							"Content-Type": "multipart/form-data",
-						},
-					}
-				);
+				const response = await apiClient.post<UploadedFile[]>("/api/files", formData, {
+					headers: {
+						"Content-Type": "multipart/form-data",
+					},
+				});
 
 				return response.data;
 			} catch (error) {
@@ -65,15 +62,11 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 
 		try {
 			setSending(true);
-			const response = await axios.post<OrderResponseData>(
-				"https://multistep-form-backend-production.up.railway.app/api/orders",
-				JSON.stringify({ data }),
-				{
-					headers: {
-						"Content-Type": "application/json",
-					},
-				}
-			);
+			const response = await apiClient.post<OrderResponseData>("/api/orders", JSON.stringify({ data }), {
+				headers: {
+					"Content-Type": "application/json",
+				},
+			});
 
 			if (response.data) {
 				onSuccess?.();
@@ -89,9 +82,7 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 	const fetchAllOrders = async () => {
 		try {
 			setFetching(true);
-			const response = await axios.get<OrderResponseData[]>(
-				"https://multistep-form-backend-production.up.railway.app/api/orders"
-			);
+			const response = await apiClient.get<OrderResponseData[]>("/api/orders");
 
 			setOrders(response.data);
 			setFetching(false);
