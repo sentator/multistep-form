@@ -38,7 +38,7 @@ interface OrderResponseData {
 			trackNumber: string;
 		};
 		documents?: {
-			// invoice: File[];
+			invoice: UploadedFile[];
 			lastName: string;
 			firstName: string;
 			patronymicName: string;
@@ -62,6 +62,18 @@ interface UploadedFile {
 	fileUrl: string;
 }
 
+interface OrdersTableData {
+	country: OptionItem | { name: string; icon: null };
+	shop: OptionItem | { name: string };
+	parcelName: string;
+	productName: string;
+	quantity: number;
+	totalPrice: string;
+	promocode: string;
+	trackNumber: string;
+	subRows: OrdersTableData[] | null;
+}
+
 export type {
 	OptionItem,
 	ProductItem,
@@ -73,4 +85,5 @@ export type {
 	StepperBarItem,
 	OrderResponseData,
 	UploadedFile,
+	OrdersTableData,
 };

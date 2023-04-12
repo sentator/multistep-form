@@ -11,6 +11,10 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 	const [isFetching, setFetching] = React.useState<boolean>(false);
 	const [orders, setOrders] = React.useState<OrderResponseData[] | null>(null);
 
+	React.useEffect(() => {
+		fetchAllOrders();
+	}, []);
+
 	const _sendFiles = async () => {
 		const {
 			documents: { invoice: files },
@@ -98,10 +102,6 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 			}
 		}
 	};
-
-	React.useEffect(() => {
-		fetchAllOrders();
-	}, []);
 
 	return { isSending, isFetching, error, sendOrderData, orders };
 };
