@@ -1,7 +1,8 @@
 import React from "react";
+import { useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router";
 
-import { StepperBarItem } from "../../../../types";
+import { OrderResponseData, StepperBarItem } from "../../../../types";
 import { deliveryFormContext } from "../../../../context";
 import useDeliveryFormService from "../../../../services/deliveryForm";
 import StepperBar from "../../../../components/stepperBar/StepperBar";
@@ -11,12 +12,22 @@ import Button from "../../../../components/button/Button";
 import "./confirmData.scss";
 
 const ConfirmData = () => {
-	const navigate = useNavigate();
-	const { sendOrderData, isSending, error } = useDeliveryFormService(() => {
-		navigate("/");
-		clearContextData();
-	});
 	const { isDocumentsRequired, clearContextData } = React.useContext(deliveryFormContext);
+	const navigate = useNavigate();
+	const { createNewOrder } = useDeliveryFormService();
+	const queryClient = useQueryClient();
+	const {
+		mutate: sendOrderData,
+		isLoading,
+		isError,
+		error,
+	} = useMutation<OrderResponseData | null, Error>(createNewOrder, {
+		onSuccess: () => {
+			queryClient.invalidateQueries(["orders"]);
+			navigate("/");
+			clearContextData();
+		},
+	});
 
 	const steps: StepperBarItem[] = isDocumentsRequired
 		? [
@@ -35,21 +46,21 @@ const ConfirmData = () => {
 				<StepperBar steps={steps} />
 			</div>
 			<div className="page-confirmation__body">
-				{isSending && (
+				{isLoading && (
 					<>
 						<p className="page-confirmation__text">ЗАЧЕКАЙТЕ, БУДЬ ЛАСКА!</p>
 						<p className="page-confirmation__text">Відбувається надсилання форми...</p>
 					</>
 				)}
-				{!!error && (
+				{isError && (
 					<>
 						<>
 							<p className="page-confirmation__text">СТАЛАСЯ ПОМИЛКА!</p>
-							<p className="page-confirmation__text">{error}</p>
+							<p className="page-confirmation__text">{error.message}</p>
 						</>
 					</>
 				)}
-				{!isSending && !error && (
+				{!isLoading && !isError && (
 					<>
 						<p className="page-confirmation__text">ВІТАЄМО!</p>
 						<p className="page-confirmation__text">
@@ -62,7 +73,7 @@ const ConfirmData = () => {
 				<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
 				<div className="page-confirmation__navigation">
 					<NavigationLink to="/new-order/address" title="Редагувати форму" />
-					<Button title="Відправити" onClick={sendOrderData} disabled={isSending || !!error} />
+					<Button title="Відправити" onClick={() => sendOrderData()} disabled={isLoading || isError} />
 				</div>
 			</div>
 		</div>

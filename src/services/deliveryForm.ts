@@ -1,20 +1,16 @@
 import React from "react";
-import { isAxiosError } from "axios";
 
 import { OrderResponseData, UploadedFile } from "../types";
-import { apiClient } from "../apiClient";
 import { deliveryFormContext } from "../context";
+import { apiClient } from "../apiClient";
+import { isAxiosError } from "axios";
 
-const useDeliveryFormService = (onSuccess?: () => void) => {
+const useDeliveryFormService = () => {
 	const { formState, isDocumentsRequired } = React.useContext(deliveryFormContext);
-	const [error, setError] = React.useState<string | null>(null);
-	const [isSending, setSending] = React.useState<boolean>(false);
-	const [isFetching, setFetching] = React.useState<boolean>(false);
-	const [orders, setOrders] = React.useState<OrderResponseData[] | null>(null);
 
-	React.useEffect(() => {
-		fetchAllOrders();
-	}, []);
+	const fetchOrders = async () => {
+		return await apiClient.get<OrderResponseData[]>("/api/orders").then((response) => response.data);
+	};
 
 	const _sendFiles = async () => {
 		const {
@@ -29,7 +25,6 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 			});
 
 			try {
-				setSending(true);
 				const response = await apiClient.post<UploadedFile[]>("/api/files", formData, {
 					headers: {
 						"Content-Type": "multipart/form-data",
@@ -39,7 +34,7 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 				return response.data;
 			} catch (error) {
 				if (isAxiosError<UploadedFile[]>(error)) {
-					setError("Сталася помилка при відправленні файлів");
+					throw new Error("Сталася помилка при відправленні файлів");
 				}
 			}
 		}
@@ -47,13 +42,11 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 		return null;
 	};
 
-	const sendOrderData = async () => {
+	const createNewOrder = async () => {
 		const uploadedFiles = await _sendFiles();
 
 		if (isDocumentsRequired && !uploadedFiles) {
-			setSending(false);
-			setError("Не прикріплено жодного файлу");
-			return;
+			throw new Error("Не прикріплено жодного файлу");
 		}
 
 		const data = isDocumentsRequired
@@ -61,40 +54,23 @@ const useDeliveryFormService = (onSuccess?: () => void) => {
 			: { generalInformation: formState.generalInformation, address: formState.address };
 
 		try {
-			setSending(true);
 			const response = await apiClient.post<OrderResponseData>("/api/orders", JSON.stringify({ data }), {
 				headers: {
 					"Content-Type": "application/json",
 				},
 			});
 
-			if (response.data) {
-				onSuccess?.();
-			}
+			return response.data;
 		} catch (error) {
 			if (isAxiosError<OrderResponseData>(error)) {
-				setError("Не вдалося відправити дані форми");
+				throw new Error("Не вдалося відправити дані форми");
 			}
 		}
-		setSending(false);
+
+		return null;
 	};
 
-	const fetchAllOrders = async () => {
-		try {
-			setFetching(true);
-			const response = await apiClient.get<OrderResponseData[]>("/api/orders");
-
-			setOrders(response.data);
-			setFetching(false);
-		} catch (error) {
-			if (isAxiosError<OrderResponseData[]>(error)) {
-				setError("Не вдалося завантажити список замовлень");
-				setFetching(false);
-			}
-		}
-	};
-
-	return { isSending, isFetching, error, sendOrderData, orders };
+	return { fetchOrders, createNewOrder };
 };
 
 export default useDeliveryFormService;

@@ -54,6 +54,8 @@ interface OrderResponseData {
 			phoneNumber: string;
 		};
 	};
+	createdAt: string;
+	updatedAt: string;
 }
 
 interface UploadedFile {

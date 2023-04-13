@@ -1,7 +1,9 @@
 import { OrderResponseData, OrdersTableData, ProductItem } from "../types";
 import { CURRENCY } from "./database";
 
-export const prepareOrdersTableData = (orderResponseData: OrderResponseData[] | null): OrdersTableData[] => {
+export const prepareOrdersTableData = (
+	orderResponseData: OrderResponseData[] | null | undefined
+): OrdersTableData[] => {
 	const data: OrdersTableData[] =
 		orderResponseData?.map(
 			({
