@@ -63,6 +63,44 @@
 			display: none;
 		}
 	}
+	&__header {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 10px;
+		padding: 10px;
+	}
+	&__header-btn {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20px;
+		height: 20px;
+		color: var(--mainRedColor);
+		cursor: pointer;
+		svg {
+			pointer-events: none;
+			color: inherit;
+			width: 16px;
+			height: 16px;
+		}
+		&--prev {
+			svg {
+				transform: rotate(180deg);
+			}
+		}
+		&--next {
+		}
+	}
+	&__header-pickers {
+		display: flex;
+		justify-content: center;
+		gap: 5px;
+	}
+	&__header-select {
+		height: 20px;
+		cursor: pointer;
+	}
 	.react-datepicker__input-container {
 		height: 48px;
 		&::after {
