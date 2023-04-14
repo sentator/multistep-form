@@ -1,0 +1,54 @@
+.orders-table {
+	max-width: 100%;
+	overflow-x: auto;
+	table {
+		table-layout: fixed;
+		min-width: 1250px;
+		border-collapse: collapse;
+		text-align: center;
+	}
+	th {
+		background-color: (var(--mainRedColor));
+		padding: 10px;
+		color: var(--mainWhiteColor);
+		font-family: var(--fontFamily);
+		vertical-align: baseline;
+	}
+	tr {
+		border-top: 1px solid var(--gullGrayColor);
+		border-bottom: 1px solid var(--gullGrayColor);
+	}
+	td {
+		padding: 10px;
+		border-left: 1px solid var(--gullGrayColor);
+		border-right: 1px solid var(--gullGrayColor);
+	}
+	thead {
+		tr {
+			border: 1px solid var(--mainRedColor);
+		}
+	}
+	.cell-country {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		&__icon {
+			display: flex;
+			align-items: center;
+			flex: 0 0 24px;
+			height: 24px;
+			img {
+				max-width: 100%;
+			}
+		}
+		&__name {
+			text-align: left;
+		}
+	}
+	.btn-expand {
+		width: 30px;
+		border: none;
+		background-color: transparent;
+		color: inherit;
+	}
+}

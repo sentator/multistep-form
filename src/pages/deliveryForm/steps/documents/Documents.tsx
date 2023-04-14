@@ -13,6 +13,7 @@ import NavigationLink from "../../../../components/navigationLink/NavigationLink
 import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 import "./documents.scss";
+import Button from "../../../../components/button/Button";
 
 const Documents: React.FC = () => {
 	const {
@@ -31,13 +32,15 @@ const Documents: React.FC = () => {
 		invoice: Yup.mixed().required("Файл рахунку-фактури є обов'язковим."),
 		lastName: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ-][а-щьюяґєії'-]*$/gi, {
+				message: "Доступні лише літери з українського алфавіту",
+			}),
 		firstName: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ-][а-щьюяґєії'-]*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
 		patronymicName: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ-][а-щьюяґєії'-]*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
 		passport: Yup.string()
 			.required("Значення недопустиме.")
 			.matches(/[А-ЩЬЮЯҐЄІЇ]{2}\d{6}/gi, { message: "Серія та номер повинні відповідати формату АБ123456" })
@@ -46,10 +49,14 @@ const Documents: React.FC = () => {
 		passportIssueDate: Yup.string().required("Значення не повинно бути пустим."),
 		passportIssuedBy: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ -.,0-9][а-щьюяґєії' -.,0-9]*$/gi, {
+				message: "Доступні лише літери з українського алфавіту",
+			}),
 		registrationAddress: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ -.,0-9][а-щьюяґєії' -.,0-9]*$/gi, {
+				message: "Доступні лише літери з українського алфавіту",
+			}),
 		identificationNumber: Yup.string()
 			.required("Значення не повинно бути пустим.")
 			.matches(/\d{10}/gi, { message: "Ідентифікаційний номер повинен містити 10 цифр" })
@@ -128,8 +135,11 @@ const Documents: React.FC = () => {
 							/>
 						</div>
 						<div className="documents-form__row documents-form__row--controls">
-							<NavigationLink title="Назад" to="/new-order/generalInformation" />
-							<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+							<div className="documents-form__navigation">
+								<NavigationLink title="Назад" to="/new-order/generalInformation" />
+								<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							</div>
 						</div>
 					</Form>
 				</Formik>

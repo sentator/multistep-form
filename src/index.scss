@@ -37,10 +37,19 @@ a {
 
 .app {
 	padding: 80px 0;
+	@media (max-width: 48em) {
+		padding: 40px 0;
+	}
 }
 
 .container {
 	max-width: 870px;
+	margin: 0 auto;
+	padding: 0 20px;
+}
+
+.wrapper {
+	max-width: 1365px;
 	margin: 0 auto;
 	padding: 0 20px;
 }

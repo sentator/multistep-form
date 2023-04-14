@@ -4,6 +4,8 @@ import { convertToEuro } from "./convertToEuro";
 import { calcCustomsFees } from "./calcCustomsFees";
 import { getFormattedPrice } from "./getFormattedPrice";
 import { transformFileList } from "./transformFileList";
+import { prepareOrdersTableData } from "./prepareOrdersTableData";
+import { getYearsFromRange } from "./getYearsFromRange";
 
 export {
 	COUNTRIES,
@@ -14,4 +16,6 @@ export {
 	calcCustomsFees,
 	getFormattedPrice,
 	transformFileList,
+	prepareOrdersTableData,
+	getYearsFromRange,
 };

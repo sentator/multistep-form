@@ -1,0 +1,46 @@
+.order-item {
+	display: flex;
+	column-gap: 10px;
+	padding: 20px;
+	height: 100%;
+	border-radius: 16px;
+	background-color: var(--mainGrayColor);
+	/* .order-item__icon */
+	&__icon {
+		display: flex;
+		align-items: center;
+		width: 24px;
+		height: 24px;
+	}
+	/* .order-item__body */
+	&__body {
+		display: flex;
+		flex-direction: column;
+	}
+	/* .order-item__content */
+	&__content {
+		flex: 1 0 auto;
+	}
+	/* .order-item__title */
+	&__title {
+		font-size: 1rem;
+		line-height: 150%;
+		font-weight: 500;
+		color: var(--mainDarkColor);
+		margin-bottom: 1.5em;
+	}
+	/* .order-item__tracking-number */
+	&__tracking-number {
+		font-size: 1rem;
+		line-height: 130%;
+		color: var(--mainDarkColor);
+		margin-bottom: 0.25em;
+	}
+	/* .order-item__status */
+	&__status {
+		font-size: 1rem;
+		line-height: 150%;
+		font-weight: 500;
+		color: var(--mainDarkColor);
+	}
+}

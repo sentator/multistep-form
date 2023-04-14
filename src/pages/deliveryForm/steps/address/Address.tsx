@@ -10,6 +10,7 @@ import StepperBar from "../../../../components/stepperBar/StepperBar";
 import Input from "../../../../components/input/Input";
 import InputPhone from "../../../../components/inputPhone/InputPhone";
 import NavigationLink from "../../../../components/navigationLink/NavigationLink";
+import NavigationButton from "../../../../components/navigationButton/NavigationButton";
 import Button from "../../../../components/button/Button";
 
 import "./address.scss";
@@ -18,25 +19,25 @@ const Address: React.FC = () => {
 	const {
 		formState: { address },
 		updateAddress,
-		clearContextData,
 		isDocumentsRequired,
 	} = React.useContext(deliveryFormContext);
 
 	const navigate = useNavigate();
 
 	const prevStep = isDocumentsRequired ? "/new-order/documents" : "/new-order/generalInformation";
-	const nextStep = "/success";
+	const nextStep = "/new-order/confirm-data";
 
 	const submitStep = (data: StepAddressValues) => {
 		updateAddress(data);
-		clearContextData();
 		navigate(nextStep);
 	};
 
 	const validationSchema = Yup.object().shape({
 		deliveryAddress: Yup.string()
 			.required("Значення не повинно бути пустим.")
-			.matches(/^[А-ЩЬЮЯҐЄІЇ][а-щьюяґєії']*$/gi, { message: "Доступні лише літери з українського алфавіту" }),
+			.matches(/^[А-ЩЬЮЯҐЄІЇ .,0-9][а-щьюяґєії' .,0-9]*$/gi, {
+				message: "Доступні лише літери з українського алфавіту",
+			}),
 		phoneNumber: Yup.string()
 			.required("Значення не повинно бути пустим.")
 			.max(16, "Цей номер телефону не дійсний")
@@ -76,8 +77,11 @@ const Address: React.FC = () => {
 							</div>
 						</div>
 						<div className="address-form__row address-form__row--controls">
-							<NavigationLink title="Назад" to={prevStep} />
-							<Button title="Зберегти відправлення" type="submit" />
+							<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+							<div className="address-form__navigation">
+								<NavigationLink title="Назад" to={prevStep} />
+								<NavigationButton title="Продовжити" iconPosition="right" type="submit" />
+							</div>
 						</div>
 					</Form>
 				</Formik>

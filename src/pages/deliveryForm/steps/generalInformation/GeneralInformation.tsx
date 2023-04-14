@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router";
 
 import { StepGeneralInformationValues, StepperBarItem } from "../../../../types";
 import { COUNTRIES, CURRENCY, SHOPS, calcTotalPrice, calcCustomsFees, getFormattedPrice } from "../../../../utils";
@@ -8,10 +9,12 @@ import Input from "../../../../components/input/Input";
 import OrderComposition from "../../../../components/orderComposition/OrderComposition";
 import CardsInformation from "../../../../components/cardsInformation/CardsInformation";
 import SectionTracking from "../../../../components/sectionTracking/SectionTracking";
+import NavigationLink from "../../../../components/navigationLink/NavigationLink";
 import Button from "../../../../components/button/Button";
 import StepperBar from "../../../../components/stepperBar/StepperBar";
 
 import "./generalInformation.scss";
+import NavigationButton from "../../../../components/navigationButton/NavigationButton";
 
 interface GeneralInformationProps {
 	orderCompositionValue: StepGeneralInformationValues["orderComposition"];
@@ -31,6 +34,7 @@ const GeneralInformation: React.FC<GeneralInformationProps> = ({
 	const country = useWatch<StepGeneralInformationValues, "country">("country");
 	const orderComposition = useWatch<StepGeneralInformationValues, "orderComposition">("orderComposition");
 	const firstRender = React.useRef<boolean>(true);
+	const navigate = useNavigate();
 
 	const optionsShops = country ? SHOPS[country.id] : SHOPS["default"];
 	const currency = country ? CURRENCY[country.id] : undefined;
@@ -106,13 +110,15 @@ const GeneralInformation: React.FC<GeneralInformationProps> = ({
 						/>
 					</div>
 				</div>
-
 				<div className="general-information-form__row general-information-form__row--5">
 					<SectionTracking name="trackNumber" id="input_track-number" />
 				</div>
-
 				<div className="general-information-form__row general-information-form__row--6">
-					<Button title="Зберегти відправлення" type="submit" />
+					<Button title="Скасувати" type="button" onClick={() => navigate("/")} />
+					<div className="general-information-form__navigation">
+						<NavigationLink title="Назад" to="/" />
+						<NavigationButton title="Продовжити" type="submit" />
+					</div>
 				</div>
 			</div>
 		</>
